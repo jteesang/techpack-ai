@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   const handleCreateTechpack = () => {
-    router.push('/generate');
+    router.push('/path');
   };
 
   const handleGetStarted = () => {

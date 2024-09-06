@@ -9,7 +9,8 @@ export const config = {
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method == "POST") {
-    const { data } = await axios.post('http://localhost:3000/upload', req, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    const { data } = await axios.post(`${baseUrl}/upload`, req, {
       responseType: "stream",
       headers: {
         "Content-Type": req.headers["content-type"], // which is multipart/form-data with boundary included
