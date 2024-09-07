@@ -13,75 +13,10 @@ interface TechpackFormProps {
 const TechpackForm: React.FC<TechpackFormProps> = ({ formValues, onChange, onSubmit, onSizingChange  }) => {
   const router = useRouter();
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   const { name, value } = e.target;
-  //   setFormValues({
-  //     ...formValues,
-  //     [name]: value,
-  //   });
-  // };
-
-  // const handleSizingChange = (sizing: string) => {
-  //   setFormValues({
-  //     ...formValues,
-  //     sizing,
-  //   });
-  // };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   setLoading(true);
-
-  //   console.log(formValues);
-  //   const formData = new FormData();
-  //   formData.append('id', techpackId); // Use the techpackId from the previous page
-
-  //   Object.keys(formValues).forEach((key) => {
-  //     formData.append(key, formValues[key as keyof FormValues].toString());
-  //   });
-    
-  //   // Handle form submission logic here
-  //   // Send FormData in a POST request
-  //   try {
-  //     const response = await fetch(`/api/techpack/${techpackId}`, {
-  //       method: 'POST',
-  //       body: formData,
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     const result = await response.json();
-  //     console.log('Success:', result);
-      
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // };
-
-  const handleBack = () => {
+  const handleBack = (e) => {
+    e.preventDefault();
     router.back(); // Go back to the previous page
   };
-
-  // useEffect(() => {
-  //   const fetchDescription = async () => {
-  //     console.log(`Techpack id in form: ${techpackId}`);
-  //     setLoading(true);
-  //     setError(null); 
-  //     try {
-  //       // const response = await fetch(`/api/techpack/${techpackId}`);
-  //       // setDescription(response.data.description); // Adjust based on actual API response structure
-  //     } catch (err) {
-  //       setError('Failed to fetch description');
-  //       console.error('Error fetching description:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchDescription();
-  // }, [techpackId]); // Fetch data whenever `techpackId` changes
 
   return (
     <div>

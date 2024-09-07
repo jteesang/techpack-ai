@@ -1,12 +1,13 @@
 export interface FormValues {
     description: string;
-    brandName: string;
-    styleId: string;
-    styleName: string;
+    brand_name: string;
+    style_id: string;
+    style_name: string;
     fabric: string;
-    sizing: string;
-    colorStyle: string;
-    additionalDetails: string;
+    sizing_preference: string;
+    color_style: string;
+    colorways?: string;
+    additional_details?: string;
 }
 
 export interface UploadResponse {

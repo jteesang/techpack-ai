@@ -9,11 +9,11 @@ const UploadOrDescribe: React.FC = () => {
   const router = useRouter();
 
   const handleUpload = () => {
-    router.push('/upload');
+    router.push('/creator');
   };
 
   const handleDescribe = () => {
-    router.push('/create-techpack');
+    router.push('/inputform');
   };
 
   return (

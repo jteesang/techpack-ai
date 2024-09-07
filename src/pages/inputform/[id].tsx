@@ -1,7 +1,8 @@
 // pages/techpack/[id].tsx
 'use client'
 import { GetServerSideProps } from 'next';
-import TechpackForm from '@/components/form';
+// import TechpackForm from '@/components/form';
+import InputForm from '@/components/inputform';
 import { FormValues } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -12,7 +13,7 @@ interface TechpackProps {
 
 const TechpackPage = () => {
     const router = useRouter();
-    const { id } = router.query;
+    // const { id } = router.query;
     // console.log(`TechpackPage: ${id}`);
 
     const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
@@ -20,13 +21,14 @@ const TechpackPage = () => {
 
     const [formValues, setFormValues] = useState<FormValues>({
         description: '',
-        brandName: '',
-        styleId: '',
-        styleName: '',
+        brand_name: '',
+        style_id: '',
+        style_name: '',
         fabric: '',
-        sizing: '',
-        colorStyle: '',
-        additionalDetails: '',
+        sizing_preference: '',
+        color_style: '',
+        colorways: '',
+        additional_details: '',
     });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -41,29 +43,16 @@ const TechpackPage = () => {
 const handleSizingChange = (sizing: string) => {
     setFormValues({
         ...formValues,
-        sizing,
+        sizing_preference: sizing,
     });
 };
-
-const printFormData = (formData: FormData) => {
-    // Convert FormData entries to an array and log each key-value pair
-    Array.from(formData.entries()).forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-    });
-};
-
 
 const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    console.log(formValues); // delete
-
     const formData = new FormData();
     formData.append('id', techpackId); // Use the techpackId from the previous page
-
-
-    printFormData(formData);
 
     Object.keys(formValues).forEach((key) => {
         formData.append(key, formValues[key as keyof FormValues].toString());
@@ -72,16 +61,18 @@ const handleSubmit = async (e: React.FormEvent) => {
     // Handle form submission logic here
     // Send FormData in a POST request
     try {
-        const response = await fetch(`/api/techpack/${String(techpackId)}`, {
+        const response = await fetch(`/api/inputform/${String(techpackId)}`, {
         method: 'POST',
-        body: formData,
+        body: formData
     });
 
-        if (!response.ok) {
-        throw new Error('Network response was not ok');
-        }
-        const result = await response.json();
-        console.log('Success:', result);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const result = await response.json()
+    console.log(`techpackId: ${techpackId}`)
+    router.push(`/viewer/${techpackId}`)
+    console.log('Success:', result);
         
     } catch (error) {
         console.error('Error:', error);
@@ -102,7 +93,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div>
-      <TechpackForm 
+      <InputForm 
         formValues={formValues}
         onChange={handleChange} 
         onSubmit={handleSubmit}
@@ -111,27 +102,5 @@ const handleSubmit = async (e: React.FormEvent) => {
     </div>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { id } = context.query; // Get the dynamic id from the URL
-//   const baseUrl = process.env.NEXT_PUBLIC_API_URL; // Replace with your API's base URL
-
-//   // Fetch data based on the id
-//   const response = await fetch(`${baseUrl}/techpack/${encodeURIComponent(String(id))}`, {
-//     method: 'GET', // or POST, PUT, DELETE, etc.
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//   });
-
-//   const data = await response.json();
-
-//   return {
-//     props: {
-//       id,
-//       data
-//     }
-//   };
-// };
 
 export default TechpackPage;

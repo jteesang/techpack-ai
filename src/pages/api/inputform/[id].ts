@@ -24,17 +24,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method == "POST") {
-    const response = await axios.post(`${baseUrl}/techpack/${id}`, req, {
+    console.log('making api request ----------------');
+    console.log(req.body);
+
+    const response = await axios.post(`${baseUrl}/inputform/${id}`, req, {
       // responseType: "stream",
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        "Content-Type": req.headers["content-type"], // which is multipart/form-data with boundary included
+      },
     });
-    response.data.pipe(res)
+    
+    res.status(200).json(response.data);
   }  else if (req.method == "GET") {
-    const response = await axios.get(`${baseUrl}/techpack/${id}`, {
+    const response = await axios.get(`${baseUrl}/inputform/${id}`, {
+      method: "GET"
     });
-    response.data.pipe(res)
+    res.status(200).json(response.data);
   }
   else {
     return res.status(405).json({ message: "Method Not Allowed" });
