@@ -7,6 +7,7 @@ import { ChevronRight, Image as ImageIcon, Send } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import TypewriterTextarea from '@/components/Typewriter'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 export default function Creator() {
   const [file, setFile] = useState<File | null>(null);
@@ -19,7 +20,7 @@ export default function Creator() {
 
   const handleRegenerate = () => {
     setImageUrl(null);
-    setDescription(' ');
+    setDescription(null);
     setTechpackId(null);
     setUploadResult(null);
     setFile(null);
@@ -58,9 +59,9 @@ export default function Creator() {
         setUploadResult('Upload successful');
   
       } else {
-        const errorText = await response.text();
-        setUploadResult(`Upload failed: ${errorText}`);
-        console.error('Upload failed:', errorText);
+        //const errorText = await response.
+        setUploadResult('Upload failed, try again!');
+        //console.error('Upload failed:', errorText);
       }
     } catch (error) {
       setUploadResult(`Error: ${error}`);
@@ -70,6 +71,9 @@ export default function Creator() {
     }
   };
 
+  const handleBack = () => {
+    router.back(); // Go back to the previous page
+  };
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -120,28 +124,36 @@ export default function Creator() {
               </div>
             ) : (
               <div className="flex-1">
-                {/* <label htmlFor="fileInput" className="block text-sm font-medium text-gray-700 mb-2">Upload Sketch</label> */}
-                {/* <div className="flex-1 flex items-center justify-center"> */}
+                {uploading === true ? 
+                  <LoadingSpinner/>
+                  : 
+                  <div>
                   <input
                     type="file"
                     id="fileInput"
                     onChange={handleFileChange}
                     className="block w-full px-3 py-2 rounded-lg"
                     disabled={uploading}
-                  />
-                {/* </div> */}
+                  /> 
+                  </div>
+                }
+
                 {/* Upload Result Message */}
                 {uploadResult && (
                   <div className="flex flex-col items-center space-y-2 mb-4">
-                    <p className={`text-center ${uploadResult.startsWith('Upload successful') ? 'text-green-500' : 'text-red-500'}`}>
+                    {uploading ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <p className={`text-center ${uploadResult.startsWith('Upload successful') ? 'text-green-500' : 'text-red-500'}`}>
                       {uploadResult}
                     </p>
+                    )}
                   </div>
                 )}
               </div>
             )}
               </div>
-              <div className="mt-4 relative">
+              {/* <div className="mt-4 relative">
                 <Input 
                   placeholder="Message Techpack AI" 
                   className="pr-20 bg-white border-gray-200 rounded-none text-sm h-12"
@@ -154,22 +166,24 @@ export default function Creator() {
                     <Send className="h-4 w-4 text-gray-400" />
                   </Button>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="w-1/2">
-              <h2 className="text-sm font-medium mb-2 text-gray-700">AI-Generated Description<span className="text-xs text-gray-500"> (editable)</span></h2>
+              <h2 className="text-sm font-medium mb-2 text-gray-700">AI-Generated Description<span className="text-xs text-gray-500"></span></h2>
               <div className="bg-white p-4 h-[280px] overflow-y-auto rounded-lg border border-gray-200">
-                <p className="text-gray-400 italic text-sm">AI generated Image description</p>
                 <TypewriterTextarea 
                 text={description || ' '} 
                 speed={50} 
               />
-              </div>
-              <div className="mt-4 flex justify-between">
-                <Button variant="outline" className="text-gray-700 bg-white border-gray-300 rounded-full px-6">Back</Button>
-                <Button onClick={handleRegenerate} className="bg-[#3366FF] hover:bg-[#2952CC] text-white rounded-full px-6">Regenerate</Button>
+              <p className="text-gray-400 italic text-center text-sm p-4">AI generated descriptions may be incorrect.</p>
               </div>
             </div>
+          </div>
+          <div className="flex justify-between items-center mt-8">
+                <Button onClick={handleBack} variant="outline" className="px-6 py-2 rounded-full border-2 border-gray-300">Back</Button>
+                <Button onClick={handleRegenerate} disabled={!techpackId} className="px-6 py-2 bg-[#0047FF] hover:bg-[#0037CC] text-white rounded-full">
+                Regenerate
+              </Button>
           </div>
         </Card>
       </main>

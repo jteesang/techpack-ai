@@ -1,6 +1,5 @@
 // pages/techpack/[id].tsx
 'use client'
-import { GetServerSideProps } from 'next';
 // import TechpackForm from '@/components/form';
 import InputForm from '@/components/inputform';
 import { FormValues } from '@/app/types';
@@ -77,7 +76,24 @@ const handleSubmit = async (e: React.FormEvent) => {
     } catch (error) {
         console.error('Error:', error);
     }
-    };
+  };
+
+  const getExistingTechpack = async (techpackId: string) => {
+    try {
+      const response = await fetch(`/api/inputform/${String(techpackId)}`, {
+          method: 'GET'
+      });
+
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      const result = await response.json()
+      console.log(`${JSON.stringify(result)}`)
+      return result;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+  }
 
     useEffect(() => {
         // If techpackId is not provided, set it from router.query
@@ -87,6 +103,22 @@ const handleSubmit = async (e: React.FormEvent) => {
             if (queryId) {
                 setTechpackId(queryId);
             }
+        } else {
+          // Populate techpack data if row exists
+          const fetchTechpack = async () => {
+            try {
+              const response = await getExistingTechpack(techpackId)
+              if (response.status == 404) {
+                // do nothing 
+              } else {
+                setFormValues(response)
+              }
+              
+            } catch (error) {
+              console.error(error)
+            }
+          }
+          fetchTechpack();
         }
     }, [techpackId, router.query.id]);
 

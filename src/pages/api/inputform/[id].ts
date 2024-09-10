@@ -24,9 +24,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method == "POST") {
-    console.log('making api request ----------------');
-    console.log(req.body);
-
     const response = await axios.post(`${baseUrl}/inputform/${id}`, req, {
       // responseType: "stream",
       headers: {
