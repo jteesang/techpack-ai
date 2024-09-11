@@ -12,18 +12,18 @@ interface TechpackFormProps {
   formValues: FormValues;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onSubmit: () => void;
+  selectedSizing: string;
   onSizingChange: (sizing: string) => void;
 }
 
-export default function InputForm({ formValues, onChange, onSubmit, onSizingChange }: TechpackFormProps) {
+export default function InputForm({ formValues, onChange, onSubmit, selectedSizing, onSizingChange }: TechpackFormProps) {
   const router = useRouter();
-  const [selectedSize, setSelectedSize] = useState<string>('XS');
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => { 
-    e.preventDefault();
-    router.push(`/table`)
+  const handleSizingPreference = (sizing: string, e: React.MouseEvent) => {
+    e.preventDefault()
+    onSizingChange(sizing)
   }
-  
+
   const handleBack = () => {
     router.back(); // Go back to the previous page
   };
@@ -84,18 +84,26 @@ export default function InputForm({ formValues, onChange, onSubmit, onSizingChan
             <div>
               <label className="block text-sm font-medium mb-2">Sizing preference</label>
               <div className="flex space-x-2">
-              {['XS', 'S', 'M', 'L', 'XL', '1', '2', '3'].map((size) => (
                 <Button
-                  onClick={() => onSizingChange(size)}
-                  name="sizing_preference"
-                  value={formValues.sizing_preference}
-                  key={size}
-                  variant={size === selectedSize ? 'default' : 'outline'}
-                  className={`px-3 py-1 text-sm rounded-md ${size === selectedSize ? 'bg-[#0374FC] text-white' : 'border-[#0047FF] text-black'}`}
-                >
-                {size}
-              </Button>
-            ))}
+                    onClick={(e) => handleSizingPreference('S/M/L', e)}
+                    name="sizing_preference"
+                    value={formValues.sizing_preference}
+                    key={'S/M/L'}
+                    variant={'S/M/L' === selectedSizing ? 'default' : 'outline'}
+                    className={`px-3 py-1 text-sm rounded-md ${'S/M/L' === selectedSizing ? 'bg-[#0374FC] text-white' : 'border-[#0047FF] text-black'}`}
+                  >
+                  S/M/L
+                </Button>
+                <Button
+                    onClick={(e) => handleSizingPreference('1/2/3', e)}
+                    name="sizing_preference"
+                    value={formValues.sizing_preference}
+                    key={'1/2/3'}
+                    variant={'1/2/3' === selectedSizing ? 'default' : 'outline'}
+                    className={`px-3 py-1 text-sm rounded-md ${'1/2/3' === selectedSizing ? 'bg-[#0374FC] text-white' : 'border-[#0047FF] text-black'}`}
+                  >
+                  1/2/3
+                </Button>
               </div>
             </div>
             <div>

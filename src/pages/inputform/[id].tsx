@@ -1,6 +1,5 @@
 // pages/techpack/[id].tsx
 'use client'
-// import TechpackForm from '@/components/form';
 import InputForm from '@/components/inputform';
 import { FormValues } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -12,9 +11,6 @@ interface TechpackProps {
 
 const TechpackPage = () => {
     const router = useRouter();
-    // const { id } = router.query;
-    // console.log(`TechpackPage: ${id}`);
-
     const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -129,6 +125,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         formValues={formValues}
         onChange={handleChange} 
         onSubmit={handleSubmit}
+        selectedSizing={formValues.sizing_preference}
         onSizingChange={handleSizingChange}
       />
     </div>

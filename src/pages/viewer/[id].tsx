@@ -1,21 +1,43 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 import { ChevronDown, Download, Edit2 } from 'lucide-react'
 import { line, text, image, multiVariableText } from '@pdfme/schemas';
-import { Template } from '@pdfme/common';
+import { Template, BLANK_PDF } from '@pdfme/common';
 import { coverTemplateData } from '@/app/assets/cover-template-data';
 import { generate } from '@pdfme/generator';
 import { coverTemplateValues, FormValues } from '@/app/types';
 import { COVER_GARMENT_LINK, COVER_IMAGE, COVER_VALUE_NAME, COVER_VALUE_SEASON, COVER_VALUE_STYLE } from "@/constants/cover";
+import { Viewer } from '@pdfme/ui';
 
 
 export default function TechpackViewer() {
     const router = useRouter();
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
     const [pdf, setPdf] = useState<Blob | null>(null);
+    const [inputs, setInputs] = useState<coverTemplateValues[]>([{
+            "cover-garment-link": { link: "" },
+            "cover-value-style": { style: "" },
+            "cover-value-name": { name: "" },
+            "cover-value-season": { season: "" },
+            "cover-value-vendor": { vendor: "" },
+            "cover-value-coo": { coo: "" },
+            "cover-value-createdby": { createdBy: "" },
+            "cover-value-date-2" : { date2: "" },
+            "cover-value-labdips": { labdips: "" },
+            "cover-value-fabrics": { fabrics: "" },
+            "cover-value-prototypes": { prototypes: "" },
+            "cover-value-trims": { trims: "" },
+            "cover-value-salessamples": { salessamples: "" },
+            "cover-value-bulkdelivery": { bulkdelivery: "" },
+            "cover-value-date": { date: "" },
+            "cover-image": { image: "" }
+        }]
+    );
 
+    // fancy template
     const template: Template = {
         basePdf: { 
             "width": 210, "height": 297, "padding": [0, 0, 0, 0]
@@ -1472,6 +1494,34 @@ export default function TechpackViewer() {
         ]
     };
 
+    // test template
+    const testTemplate: Template = {
+        basePdf: BLANK_PDF,
+        schemas: [
+          {
+            a: {
+              type: 'text',
+              position: { x: 0, y: 0 },
+              width: 10,
+              height: 10,
+            },
+            b: {
+              type: 'text',
+              position: { x: 10, y: 10 },
+              width: 10,
+              height: 10,
+            },
+            c: {
+              type: 'text',
+              position: { x: 20, y: 20 },
+              width: 10,
+              height: 10,
+            },
+          },
+        ],
+      };
+    const testInputs = [{ a: 'a1', b: 'b1', c: 'c1' }];
+
     const handleOpenPDF = async () => {
 
         // set pdf data
@@ -1479,6 +1529,7 @@ export default function TechpackViewer() {
         const getData = await populatePDF();
         const getImage = await getImageUrl();
         const inputs = [mapDataToPDF(getData, getImage)]
+        // setInputs([mapDataToPDF(getData, getImage)])
 
         await generate({ 
             template, 
@@ -1537,6 +1588,13 @@ export default function TechpackViewer() {
         }
     }
 
+    const getInputs = async () => {
+        const getData = await populatePDF();
+        const getImage = await getImageUrl();
+        const inputs = mapDataToPDF(getData, getImage);
+        setInputs([inputs]);
+    }
+
     const mapDataToPDF = (data: FormValues, image_path: string) => {
         return {
             "cover-garment-link": { link: "" },
@@ -1554,11 +1612,10 @@ export default function TechpackViewer() {
             "cover-value-salessamples": { salessamples: "" },
             "cover-value-bulkdelivery": { bulkdelivery: "" },
             "cover-value-date": { date: "" },
-            // "cover-image": { image: image_path }
+            "cover-image": { image: "" }
         }
     }
     
-
     useEffect(() => {
         // If techpackId is not provided, set it from router.query
         if (!techpackId) {
@@ -1568,7 +1625,15 @@ export default function TechpackViewer() {
                 setTechpackId(queryId);
             }
         }
-    }, [techpackId, router.query.id]);
+        if (containerRef.current) {
+            const viewer = new Viewer({
+                domContainer: containerRef.current,
+                template,
+                inputs
+            });
+            viewer['render']();
+        }
+    }, [techpackId, router.query.id, template]);
 
 
   return (
@@ -1617,11 +1682,11 @@ export default function TechpackViewer() {
           <div className="bg-gray-100 p-8 rounded-lg">
             <h2 className="text-3xl font-bold mb-2">Tech pack</h2>
             <p className="text-gray-600 mb-6">#Sew Heidi</p>
-            <Image src="/placeholder.svg?height=600&width=800" alt="Tech pack preview" width={800} height={600} className="w-full" />
-            
-            {/* Placeholder for PDF viewer content */}
-            <div className="mt-8 bg-white p-4 rounded border border-gray-300">
-              <p className="text-gray-400 text-center">PDF viewer content would go here</p>
+            {/* The Designer will be rendered inside this div */}
+            <div
+                ref={containerRef}
+                style={{ width: '100%', height: '100vh' }} // Adjust styles as needed
+                >
             </div>
           </div>
         </div>

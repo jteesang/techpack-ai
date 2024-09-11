@@ -13,22 +13,22 @@ export interface FormValues {
 }
 
 export interface coverTemplateValues {
-    COVER_GARMENT_LINK: { link: string },
-    COVER_VALUE_STYLE: { style: string },
-    COVER_VALUE_NAME: { name: string },
-    COVER_VALUE_SEASON: { season: string },
-    COVER_VALUE_VENDOR: { vendor: string },
-    COVER_VALUE_COO: { coo: string },
-    COVER_VALUE_CREATEDBY: { createdBy: string },
-    COVER_VALUE_DATE_2: { date2: string },
-    COVER_VALUE_LABDIPS: { labdips: string },
-    COVER_VALUE_FABRICS: { fabrics: string },
-    COVER_VALUE_PROTOTYPES: { prototypes: string },
-    COVER_VALUE_TRIMS: { trims: string },
-    COVER_VALUE_SALESSAMPLES: { salessamples: string },
-    COVER_VALUE_BULKDELIVERY: { bulkdelivery: string },
-    COVER_VALUE_DATE: { date: string },
-    COVER_IMAGE: { image: string }
+    "cover-garment-link": { link: string },
+    "cover-value-style": { style: string },
+    "cover-value-name": { name: string },
+    "cover-value-season": { season: string },
+    "cover-value-vendor": { vendor: string },
+    "cover-value-coo": { coo: string },
+    "cover-value-createdby": { createdBy: string },
+    "cover-value-date-2": { date2: string },
+    "cover-value-labdips": { labdips: string },
+    "cover-value-fabrics": { fabrics: string },
+    "cover-value-prototypes": { prototypes: string },
+    "cover-value-trims": { trims: string },
+    "cover-value-salessamples": { salessamples: string },
+    "cover-value-bulkdelivery": { bulkdelivery: string },
+    "cover-value-date": { date: string },
+    "cover-image": { image: string }
 }
 
 export interface UploadResponse {
