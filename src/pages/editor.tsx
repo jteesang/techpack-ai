@@ -4,6 +4,7 @@ import { ChevronRight, Image as ImageIcon, Send } from 'lucide-react'
 import { Designer } from '@pdfme/ui';
 import { Template, BLANK_PDF } from '@pdfme/common';
 import { useEffect, useRef } from 'react';
+import Home from '@/components/ui/Home';
 
 export const Editor = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -1506,10 +1507,7 @@ export const Editor = () => {
     return (
         <div>
         <header className="flex justify-between items-center py-3 px-6 border-b border-gray-200">
-        <div className="flex items-center">
-          <Image src="/placeholder.svg?height=24&width=24" alt="techpack.ai" width={24} height={24} className="text-[#3366FF]" />
-          <span className="ml-2 text-lg font-bold text-[#3366FF]">techpack.ai</span>
-        </div>
+        <Home/>
         <div className="flex items-center">
           <span className="mr-2 text-sm font-medium">Wyatt Sommer</span>
           <span className="mr-2 text-xs text-gray-500">humanhood WORLD</span>

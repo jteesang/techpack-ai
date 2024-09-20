@@ -4,6 +4,7 @@ import InputForm from '@/components/inputform';
 import { FormValues } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { generateUuid } from '@/app/utils/generateUuid';
 
 interface TechpackProps {
     techpackId: string;
@@ -11,7 +12,7 @@ interface TechpackProps {
 
 const TechpackPage = () => {
     const router = useRouter();
-    const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
+    const [techpackId, setTechpackId] = useState<string>(generateUuid());
     const [loading, setLoading] = useState<boolean>(false);
 
     const [formValues, setFormValues] = useState<FormValues>({
@@ -91,32 +92,32 @@ const getExistingTechpack = async (techpackId: string) => {
   }
 }
 
-    useEffect(() => {
-        // If techpackId is not provided, set it from router.query
-        if (!techpackId) {
-            const queryId = router.query.id as string | undefined;
-            console.log(`TechpackPage: ${queryId}`);
-            if (queryId) {
-                setTechpackId(queryId);
-            }
-        } else {
-          // Populate techpack data if row exists
-          const fetchTechpack = async () => {
-            try {
-              const response = await getExistingTechpack(techpackId)
-              if (response.status == 404) {
-                // do nothing 
-              } else {
-                setFormValues(response)
-              }
-              
-            } catch (error) {
-              console.error(error)
-            }
-          }
-          fetchTechpack();
-        }
-    }, [techpackId, router.query.id]);
+useEffect(() => {
+    // If techpackId is not provided, set it from router.query
+    console.log(`TECHPACK ID: ${techpackId}`)
+    router.push(`/inputform/${techpackId}`)
+    // if (!techpackId) {
+    //     const queryId = generateUuid();
+    //     console.log(`TechpackPage: ${queryId}`);
+    //     router.push(`/inputform/${queryId}`)
+    // } else {
+        // // Populate techpack data if row exists
+        // const fetchTechpack = async () => {
+        // try {
+        //     const response = await getExistingTechpack(techpackId)
+        //     if (response.status == 404) {
+        //     // do nothing 
+        //     } else {
+        //     setFormValues(response)
+        //     }
+            
+        // } catch (error) {
+        //     console.error(error)
+        // }
+        // }
+        // fetchTechpack();
+    // }
+}, []);
 
 
   return (

@@ -1,4 +1,22 @@
-import { COVER_GARMENT_LINK, COVER_IMAGE, COVER_VALUE_NAME, COVER_VALUE_SEASON, COVER_VALUE_STYLE } from "@/constants/cover";
+
+// Deconstructed from supabase session user
+export interface UserDetails {
+    id: string;
+    name: string;
+    email?: string;
+    avatar_url?: string;
+}
+
+export interface ProfileProps {
+    id: string;
+    email: string;
+    name?: string;
+    subscription_plan?: string;
+}
+
+export interface SidebarProps {
+    userId: string;
+}
 
 export interface FormValues {
     description: string;
@@ -11,6 +29,33 @@ export interface FormValues {
     colorways?: string;
     additional_details?: string;
 }
+
+export interface UploadResponse {
+    description: string;
+    silhouette: string;
+    neckline: string;
+    color: string;
+    fabric: string;
+    trim: string;
+    decoration: string;
+    fit: string;
+    imageUrl: string;
+}
+
+export interface Techpack {
+    id: string;
+    // name: string;
+    user_id: string;
+}
+
+export interface TechpackVersion {
+    name: string;
+    user_id: string;
+    techpack_id: string;
+    status?: string;
+    version: number;
+    content?: JSON;
+  }
 
 export interface coverTemplateValues {
     "cover-garment-link": { link: string },
@@ -31,14 +76,3 @@ export interface coverTemplateValues {
     "cover-image": { image: string }
 }
 
-export interface UploadResponse {
-    description: string;
-    silhouette: string;
-    neckline: string;
-    color: string;
-    fabric: string;
-    trim: string;
-    decoration: string;
-    fit: string;
-    imageUrl: string;
-}

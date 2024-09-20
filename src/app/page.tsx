@@ -1,4 +1,6 @@
 'use client'
+import Login from '@/components/Login';
+import { UserProvider } from '@/context/UserContext';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -13,29 +15,23 @@ const Home: React.FC = () => {
     router.push('#pricing');
   };
 
-  const handleSignUp = () => {
-    router.push('/signup');
-  };
-
   const handleLogin = () => {
     router.push('/login');
   };
 
   return (
+    <div>
+    <UserProvider>
+    
     <div className="min-h-screen flex flex-col bg-gray-100 relative">
       <div className="absolute top-4 right-4 space-x-4">
-        <button
-          onClick={handleSignUp}
-          className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-gray-800"
-        >
-          Sign In
-        </button>
-        <button
+      <Login />
+        {/* <button
           onClick={handleLogin}
           className="px-4 py-2 bg-green-800 text-white rounded hover:bg-gray-900"
-        >
+          >
           Login
-        </button>
+        </button> */}
       </div>
 
       <div className="flex flex-col items-center justify-center flex-grow">
@@ -65,6 +61,10 @@ const Home: React.FC = () => {
         </ul>
       </section>
     </div>
+  </UserProvider>
+    </div>
+
+
   );
 };
 

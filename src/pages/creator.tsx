@@ -7,7 +7,8 @@ import { ChevronRight, Image as ImageIcon, Send } from 'lucide-react'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import TypewriterTextarea from '@/components/Typewriter'
-import LoadingSpinner from '@/components/LoadingSpinner'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
+import Home from '@/components/ui/Home'
 
 export default function Creator() {
   const [file, setFile] = useState<File | null>(null);
@@ -50,7 +51,7 @@ export default function Creator() {
 
       if (response.ok) {
         const result = await response.json();
-        // console.log(`result: ${JSON.stringify(result)}`)
+        console.log(`RESULT: ${JSON.stringify(result)}`)
         setImageUrl(result.image_path);
         setDescription(result.description);
         setTechpackId(result.id);
@@ -76,11 +77,10 @@ export default function Creator() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div className="min-h-screen bg-white font-sans flex flex-col">
       <header className="flex justify-between items-center py-3 px-6 border-b border-gray-200">
         <div className="flex items-center">
-          <Image src="/placeholder.svg?height=24&width=24" alt="techpack.ai" width={24} height={24} className="text-[#3366FF]" />
-          <span className="ml-2 text-lg font-bold text-[#3366FF]">techpack.ai</span>
+          <Home />
         </div>
         <div className="flex items-center">
           <span className="mr-2 text-sm font-medium">Wyatt Sommer</span>

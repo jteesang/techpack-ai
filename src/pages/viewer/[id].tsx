@@ -1612,7 +1612,7 @@ export default function TechpackViewer() {
             "cover-value-salessamples": { salessamples: "" },
             "cover-value-bulkdelivery": { bulkdelivery: "" },
             "cover-value-date": { date: "" },
-            "cover-image": { image: "" }
+            // "cover-image": { image: "" }
         }
     }
     
