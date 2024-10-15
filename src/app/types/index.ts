@@ -2,9 +2,9 @@
 // Deconstructed from supabase session user
 export interface UserDetails {
     id: string;
-    name: string;
-    email?: string;
-    avatar_url?: string;
+    name?: string;
+    email: string;
+    avatar_url: string;
 }
 
 export interface ProfileProps {

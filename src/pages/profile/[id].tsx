@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, MouseEvent } from 'react'
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Card } from "@/components/ui/Card"
@@ -114,7 +114,7 @@ import NavBar from '@/components/NavBar'
         setFormData(prev => ({ ...prev, subscription_plan: value }))
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       console.log(`SUBMIT BUTTON PRESSED -----`)
 
@@ -170,7 +170,7 @@ return (
                 </div>
               </div>
               <Button
-                onClick={(e) => isEditing ? handleSubmit(e) : setIsEditing(true)}
+                onClick={() => isEditing ? handleSubmit : setIsEditing(true)}
                 className={`bg-[#3366FF] hover:bg-[#2952CC] text-white rounded-full px-4 py-2 transition-all duration-300 ease-in-out ${
                     isSaving ? 'animate-pulse' : ''
                 }`}
