@@ -12,11 +12,12 @@ const AuthDialog: React.FC = () => {
   const router = useRouter();
 
 
+  const redirectTo = process.env.NEXT_PUBLIC_REDIRECT_URL || `${window.location.origin}/auth/callback`;
   const handleGoogleSignIn = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: `${window.location.origin}/auth/callback`, // URL to redirect to after sign-in
+            redirectTo, // URL to redirect to after sign-in
           },
         });
     
