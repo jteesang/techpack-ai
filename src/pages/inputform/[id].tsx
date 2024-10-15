@@ -50,11 +50,6 @@ const TechpackPage = () => {
       color_style: color
     })
   }
-  const printFormData = (formData: object) => {
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +64,6 @@ const TechpackPage = () => {
         formData.append(key, '')
       }
     });
-    printFormData(formData)
 
     // Handle form submission logic here
     // Send FormData in a POST request
@@ -142,7 +136,7 @@ const TechpackPage = () => {
       <InputForm
         formValues={formValues}
         onChange={handleChange}
-        onSubmit={handleSubmit}
+        onSubmit={() => handleSubmit}
         selectedSizing={formValues.sizing_preference}
         onSizingChange={handleSizingChange}
         onColorChange={handleColorChange}

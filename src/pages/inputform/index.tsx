@@ -136,7 +136,7 @@ const TechpackPage = () => {
       <InputForm
         formValues={formValues}
         onChange={handleChange}
-        onSubmit={handleSubmit}
+        onSubmit={() => handleSubmit}
         selectedSizing={formValues.sizing_preference}
         onSizingChange={handleSizingChange}
         onColorChange={handleColorChange}

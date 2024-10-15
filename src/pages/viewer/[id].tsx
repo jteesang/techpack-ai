@@ -1591,12 +1591,12 @@ export default function TechpackViewer() {
         }
     }
 
-    const getInputs = async () => {
-        const getData = await populatePDF();
-        const getImage = await getImageUrl();
-        const inputs = mapDataToPDF(getData, getImage);
-        setInputs([inputs]);
-    }
+    // const getInputs = async () => {
+    //     const getData = await populatePDF();
+    //     const getImage = await getImageUrl();
+    //     const inputs = mapDataToPDF(getData, getImage);
+    //     setInputs([inputs]);
+    // }
 
     const mapDataToPDF = (data: FormValues, image_path: string) => {
         return {
