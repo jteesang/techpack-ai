@@ -10,6 +10,8 @@ import Sidebar from '@/components/Sidebar';
 import ProfileIcon from "@/components/ui/ProfileIcon";
 import ProfileAccount from '@/components/ui/ProfileAccount'
 import { UserProvider, useUser } from '@/context/UserContext'
+import Home from '@/components/ui/Home'
+import NavBar from '@/components/NavBar'
 
   const Profile = () => {
     const { user } = useUser();
@@ -145,23 +147,16 @@ import { UserProvider, useUser } from '@/context/UserContext'
     }
 
 return (
-    <UserProvider>
-
-<div className="min-h-screen bg-white font-sans flex">
+  <UserProvider>
+    <div className="min-h-screen bg-white font-sans flex">
       {/* Sidebar */}
         <Sidebar />
 
       {/* Main content */}
       <div className="flex-1">
-        <header className="flex justify-between items-center py-3 px-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-          <div className="flex items-center">
-            <ProfileAccount className="" name={formData.name}/>
-            <ProfileIcon className="h-8 w-8" name={formData.name} url={formData.avatar_url}/> 
-            {/* <span className="mr-2 text-sm font-medium">{formData.name}</span>
-            <span className="mr-2 text-xs text-gray-500">humanhood WORLD</span>
-            <ProfileIcon className="h-8 w-8" name={formData.name} url={formData.avatar_url}/> */}
-          </div>
+        <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
+          <Home/>
+          <NavBar/>
         </header>
 
         <main className="max-w-3xl mx-auto mt-8 px-4">
@@ -171,7 +166,7 @@ return (
                 <ProfileIcon className="h-20 w-20 mr-4" name={formData.name} url={formData.avatar_url}/>
               <div>
                   <h2 className="text-2xl font-bold text-gray-900">{formData.name}</h2>
-                  <p className="text-sm text-gray-500">humanhood WORLD</p>
+                  {/* <p className="text-sm text-gray-500">humanhood WORLD</p> */}
                 </div>
               </div>
               <Button

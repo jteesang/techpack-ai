@@ -9,6 +9,9 @@ import { generate } from '@pdfme/generator';
 import { coverTemplateValues, FormValues } from '@/app/types';
 import { COVER_GARMENT_LINK, COVER_IMAGE, COVER_VALUE_NAME, COVER_VALUE_SEASON, COVER_VALUE_STYLE } from "@/constants/cover";
 import { Viewer } from '@pdfme/ui';
+import NavBar from '@/components/NavBar';
+import Home from '@/components/ui/Home';
+import Footer from '@/components/ui/Footer';
 
 
 export default function TechpackViewer() {
@@ -18,28 +21,28 @@ export default function TechpackViewer() {
     const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
     const [pdf, setPdf] = useState<Blob | null>(null);
     const [inputs, setInputs] = useState<coverTemplateValues[]>([{
-            "cover-garment-link": { link: "" },
-            "cover-value-style": { style: "" },
-            "cover-value-name": { name: "" },
-            "cover-value-season": { season: "" },
-            "cover-value-vendor": { vendor: "" },
-            "cover-value-coo": { coo: "" },
-            "cover-value-createdby": { createdBy: "" },
-            "cover-value-date-2" : { date2: "" },
-            "cover-value-labdips": { labdips: "" },
-            "cover-value-fabrics": { fabrics: "" },
-            "cover-value-prototypes": { prototypes: "" },
-            "cover-value-trims": { trims: "" },
-            "cover-value-salessamples": { salessamples: "" },
-            "cover-value-bulkdelivery": { bulkdelivery: "" },
-            "cover-value-date": { date: "" },
-            "cover-image": { image: "" }
-        }]
+        "cover-garment-link": { link: "" },
+        "cover-value-style": { style: "" },
+        "cover-value-name": { name: "" },
+        "cover-value-season": { season: "" },
+        "cover-value-vendor": { vendor: "" },
+        "cover-value-coo": { coo: "" },
+        "cover-value-createdby": { createdBy: "" },
+        "cover-value-date-2": { date2: "" },
+        "cover-value-labdips": { labdips: "" },
+        "cover-value-fabrics": { fabrics: "" },
+        "cover-value-prototypes": { prototypes: "" },
+        "cover-value-trims": { trims: "" },
+        "cover-value-salessamples": { salessamples: "" },
+        "cover-value-bulkdelivery": { bulkdelivery: "" },
+        "cover-value-date": { date: "" },
+        "cover-image": { image: "" }
+    }]
     );
 
     // fancy template
     const template: Template = {
-        basePdf: { 
+        basePdf: {
             "width": 210, "height": 297, "padding": [0, 0, 0, 0]
         },
         schemas: [
@@ -339,7 +342,7 @@ export default function TechpackViewer() {
                     "underline": true,
                     "readOnly": true,
                     "text": "CALENDAR",
-              
+
                     "fontName": "NotoSansJP-Regular"
                 },
                 "cover-revisions-table-1": {
@@ -1498,28 +1501,28 @@ export default function TechpackViewer() {
     const testTemplate: Template = {
         basePdf: BLANK_PDF,
         schemas: [
-          {
-            a: {
-              type: 'text',
-              position: { x: 0, y: 0 },
-              width: 10,
-              height: 10,
+            {
+                a: {
+                    type: 'text',
+                    position: { x: 0, y: 0 },
+                    width: 10,
+                    height: 10,
+                },
+                b: {
+                    type: 'text',
+                    position: { x: 10, y: 10 },
+                    width: 10,
+                    height: 10,
+                },
+                c: {
+                    type: 'text',
+                    position: { x: 20, y: 20 },
+                    width: 10,
+                    height: 10,
+                },
             },
-            b: {
-              type: 'text',
-              position: { x: 10, y: 10 },
-              width: 10,
-              height: 10,
-            },
-            c: {
-              type: 'text',
-              position: { x: 20, y: 20 },
-              width: 10,
-              height: 10,
-            },
-          },
         ],
-      };
+    };
     const testInputs = [{ a: 'a1', b: 'b1', c: 'c1' }];
 
     const handleOpenPDF = async () => {
@@ -1531,16 +1534,16 @@ export default function TechpackViewer() {
         const inputs = [mapDataToPDF(getData, getImage)]
         // setInputs([mapDataToPDF(getData, getImage)])
 
-        await generate({ 
-            template, 
+        await generate({
+            template,
             inputs,
             plugins: { line, text, image, multiVariableText },
         }).then((pdf) => {
-        
-        const newBlob = new Blob([pdf.buffer], { type: 'application/pdf' });
-          window.open(URL.createObjectURL(newBlob));
-          setPdf(newBlob);
-        
+
+            const newBlob = new Blob([pdf.buffer], { type: 'application/pdf' });
+            window.open(URL.createObjectURL(newBlob));
+            setPdf(newBlob);
+
         });
 
         if (pdf) {
@@ -1604,7 +1607,7 @@ export default function TechpackViewer() {
             "cover-value-vendor": { vendor: "" },
             "cover-value-coo": { coo: "" },
             "cover-value-createdby": { createdBy: "" },
-            "cover-value-date-2" : { date2: "" },
+            "cover-value-date-2": { date2: "" },
             "cover-value-labdips": { labdips: "" },
             "cover-value-fabrics": { fabrics: data.fabric },
             "cover-value-prototypes": { prototypes: "" },
@@ -1615,7 +1618,7 @@ export default function TechpackViewer() {
             // "cover-image": { image: "" }
         }
     }
-    
+
     useEffect(() => {
         // If techpackId is not provided, set it from router.query
         if (!techpackId) {
@@ -1636,111 +1639,42 @@ export default function TechpackViewer() {
     }, [techpackId, router.query.id, template]);
 
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <header className="flex justify-between items-center py-4 px-6 border-b border-gray-200">
-        <div className="flex items-center">
-          <Image src="/placeholder.svg?height=32&width=32" alt="techpack.ai" width={32} height={32} className="text-blue-600" />
-          <span className="ml-2 text-xl font-extrabold text-black">techpack.ai</span>
-        </div>
-        <button onClick={() => router.push(`/path`)} className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center">
-          Create a New Techpack
-          <span className="ml-2 bg-white rounded-full p-1">
-            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-          </span>
-        </button>
-        <div className="flex items-center">
-          <div className="flex flex-col items-end mr-2">
-            <span className="text-sm font-bold">Wyatt Sommer</span>
-            <span className="text-xs text-gray-500">humanhoodWORLD</span>
-          </div>
-          <div className="w-10 h-10 rounded-full overflow-hidden">
-            <Image src="/placeholder.svg?height=40&width=40" alt="Wyatt Sommer" width={40} height={40} />
-          </div>
-          <ChevronDown className="ml-1 h-4 w-4 text-gray-400" />
-        </div>
-      </header>
+    return (
+        <div className="min-h-screen flex flex-col bg-white">
+            <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
+                <Home />
+                <NavBar />
+            </header>
 
-      <main className="flex-grow p-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-blue-600">Techpack Created, check it out!</h1>
-            <div className="flex space-x-4">
-              <button onClick={handleOpenPDF} className="bg-blue-600 text-white px-4 py-2 rounded-md flex items-center">
-                <Download className="mr-2 h-5 w-5" />
-                Export
-              </button>
-              <button onClick={handleEditInputForm} className="border border-blue-600 text-blue-600 px-4 py-2 rounded-md flex items-center">
-                <Edit2 className="mr-2 h-5 w-5" />
-                Edit Tech pack
-              </button>
-            </div>
-          </div>
-          
-          <div className="bg-gray-100 p-8 rounded-lg">
-            <h2 className="text-3xl font-bold mb-2">Tech pack</h2>
-            <p className="text-gray-600 mb-6">#Sew Heidi</p>
-            {/* The Designer will be rendered inside this div */}
-            <div
-                ref={containerRef}
-                style={{ width: '100%', height: '100vh' }} // Adjust styles as needed
-                >
-            </div>
-          </div>
-        </div>
-      </main>
+            <main className="flex-grow p-6">
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex justify-between items-center mb-6">
+                        <h1 className="text-2xl font-bold text-blue-600">Techpack Generated</h1>
+                        <div className="flex space-x-4">
+                            <button onClick={handleOpenPDF} className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center">
+                                <Download className="mr-2 h-5 w-5" />
+                                Export
+                            </button>
+                            <button onClick={handleEditInputForm} className="border border-blue-600 text-blue-600 px-4 py-2 rounded-full flex items-center">
+                                <Edit2 className="mr-2 h-5 w-5" />
+                                Edit Tech pack
+                            </button>
+                        </div>
+                    </div>
 
-      <footer className="bg-gradient-to-t from-[#6BFFF2] via-[#66F9F3] to-white pt-16 pb-8">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-4 gap-8">
-            <div>
-              <Image src="/placeholder.svg?height=48&width=48" alt="techpack.ai" width={48} height={48} className="mb-4" />
-              <div className="flex space-x-4">
-                {['linkedin', 'facebook', 'twitter', 'instagram'].map((social) => (
-                  <a key={social} href="#" className="text-gray-600 hover:text-gray-900">
-                    <span className="sr-only">{social}</span>
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Demo video</h3>
-              <h3 className="font-semibold mb-4">Features</h3>
-              <h3 className="font-semibold mb-4">Pricing</h3>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Log In</h3>
-              <h3 className="font-semibold mb-4">Sign UP</h3>
-              <h3 className="font-semibold mb-4">Help</h3>
-            </div>
-            <div>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Type your email"
-                  className="flex-grow px-4 py-2 rounded-l-full bg-gradient-to-r from-blue-500 to-blue-400 text-white placeholder-white"
-                />
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-r-full">
-                  Subscribe
-                </button>
-              </div>
-              <div className="mt-4 text-sm text-gray-600">
-                <a href="#" className="hover:text-gray-900">Terms of service</a>
-                {' · '}
-                <a href="#" className="hover:text-gray-900">Privacy policy</a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-12 text-center text-sm text-gray-600">
-            ©2024 techpack.ai LLC
-          </div>
+                    <div className="bg-gray-100 p-8 rounded-lg">
+                        <h2 className="text-3xl font-bold mb-2">Tech pack</h2>
+                        <p className="text-gray-600 mb-6">#Sew Heidi</p>
+                        {/* The Designer will be rendered inside this div */}
+                        <div
+                            ref={containerRef}
+                            style={{ width: '100%', height: '100vh' }} // Adjust styles as needed
+                        >
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <Footer />
         </div>
-      </footer>
-    </div>
-  )
+    )
 }

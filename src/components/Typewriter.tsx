@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 interface TypewriterTextareaProps {
-  text: string;
+  text: string | null | undefined;
   speed?: number; // Speed of typing in milliseconds
   placeholder?: string;
 }
@@ -18,14 +18,11 @@ const TypewriterTextarea: React.FC<TypewriterTextareaProps> = ({ text, speed = 8
   const handleBlur = () => setIsEditing(false);
   
   useEffect(() => {
-    console.log(`displayedText: ${displayedText}`)
-    console.log(`text: ${text}`)
 
-    if (text === undefined || text === null || text === '') {
-      setDisplayedText(' ')
+    if (text === undefined || text === null || text.trim() === '') {
+      setDisplayedText('')
       return;
     }
-    console.log(`placeholder: ${placeholder}`)
     let index = 0;
     const interval = setInterval(() => {
       // Append the current character to displayedText

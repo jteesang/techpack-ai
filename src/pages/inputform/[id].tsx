@@ -1,30 +1,32 @@
 // pages/techpack/[id].tsx
 'use client'
 import InputForm from '@/components/inputform';
-import { FormValues } from '@/app/types';
+import { FormValues, TechpackForm } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import NavBar from '@/components/NavBar';
+import Home from '@/components/ui/Home';
 
 interface TechpackProps {
-    techpackId: string;
+  techpackId: string;
 }
 
 const TechpackPage = () => {
-    const router = useRouter();
-    const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
-    const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const [formValues, setFormValues] = useState<FormValues>({
-        description: '',
-        brand_name: '',
-        style_id: '',
-        style_name: '',
-        fabric: '',
-        sizing_preference: '',
-        color_style: '',
-        colorways: '',
-        additional_details: '',
-    });
+  const [formValues, setFormValues] = useState<FormValues>({
+    description: '',
+    brand_name: '',
+    style_id: '',
+    style_name: '',
+    fabric: '',
+    sizing_preference: '',
+    color_style: '',
+    colorways: '',
+    additional_details: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -35,98 +37,115 @@ const TechpackPage = () => {
   };
 
 
-const handleSizingChange = (sizing: string) => {
+  const handleSizingChange = (sizing: string) => {
     setFormValues({
-        ...formValues,
-        sizing_preference: sizing,
+      ...formValues,
+      sizing_preference: sizing,
     });
-};
+  };
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleColorChange = (color: string) => {
+    setFormValues({
+      ...formValues,
+      color_style: color
+    })
+  }
+  const printFormData = (formData: object) => {
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     const formData = new FormData();
     formData.append('id', techpackId); // Use the techpackId from the previous page
-
-    Object.keys(formValues).forEach((key) => {
-        formData.append(key, formValues[key as keyof FormValues].toString());
+    Object.entries(formValues).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      } else {
+        formData.append(key, '')
+      }
     });
-    
+    printFormData(formData)
+
     // Handle form submission logic here
     // Send FormData in a POST request
     try {
-        const response = await fetch(`/api/inputform/${String(techpackId)}`, {
+      const response = await fetch(`/api/inputform/${String(techpackId)}`, {
         method: 'POST',
         body: formData
-    });
+      });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const result = await response.json()
-    // console.log(`techpackId: ${techpackId}`)
-    router.push(`/viewer/${techpackId}`)
-    // console.log('Success:', result);
-        
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json()
+      console.log(`result: ${(result)}`)
+      router.push(`/viewer/${techpackId}`)
+      // console.log('Success:', result);
+
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     }
   };
 
-const getExistingTechpack = async (techpackId: string) => {
-  try {
-    const response = await fetch(`/api/inputform/${String(techpackId)}`, {
+  const getExistingTechpack = async (techpackId: string) => {
+    try {
+      const response = await fetch(`/api/inputform/${String(techpackId)}`, {
         method: 'GET'
-    });
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
         throw new Error('Network response was not ok');
-    }
-    const result = await response.json()
-    console.log(`${JSON.stringify(result)}`)
-    return result;
-  } catch (error) {
+      }
+      const result = await response.json()
+      return result;
+    } catch (error) {
       console.error('Error:', error);
+    }
   }
-}
 
-    useEffect(() => {
-        // If techpackId is not provided, set it from router.query
-        if (!techpackId) {
-            const queryId = router.query.id as string | undefined;
-            console.log(`TechpackPage: ${queryId}`);
-            if (queryId) {
-                setTechpackId(queryId);
-            }
-        } else {
-          // Populate techpack data if row exists
-          const fetchTechpack = async () => {
-            try {
-              const response = await getExistingTechpack(techpackId)
-              if (response.status == 404) {
-                // do nothing 
-              } else {
-                setFormValues(response)
-              }
-              
-            } catch (error) {
-              console.error(error)
-            }
+  useEffect(() => {
+    // If techpackId is not provided, set it from router.query
+    if (!techpackId) {
+      const queryId = router.query.id as string | undefined;
+      console.log(`TechpackPage: ${queryId}`);
+      if (queryId) {
+        setTechpackId(queryId);
+      }
+    } else {
+      // Populate techpack data if row exists
+      const fetchTechpack = async () => {
+        try {
+          const response = await getExistingTechpack(techpackId)
+          if (response.status == 404 || response.status === 500) {
+            // do nothing 
+            console.log('Techpack does not currently exist.')
+          } else {
+            setFormValues(response)
           }
-          fetchTechpack();
+
+        } catch (error) {
+          console.error(error)
         }
-    }, [techpackId, router.query.id]);
+      }
+      fetchTechpack();
+    }
+  }, [techpackId, router.query.id]);
 
 
   return (
     <div>
-      <InputForm 
+      <InputForm
         formValues={formValues}
-        onChange={handleChange} 
+        onChange={handleChange}
         onSubmit={handleSubmit}
         selectedSizing={formValues.sizing_preference}
         onSizingChange={handleSizingChange}
+        onColorChange={handleColorChange}
       />
     </div>
   );

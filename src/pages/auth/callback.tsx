@@ -11,15 +11,7 @@ const AuthCallback = () => {
   const { user, loading } = useUser();
   const [userId, setUserId] = useState('');
 
-  // useEffect( () => {
-  //   const handleAuthCallback = () => {
-
-  //   }
-  // })
-
   useEffect(() => {
-
-
     const handleAuth = async () => {
       const { data: { session }, error } = await supabase.auth.getSession();
       

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Button } from "@/components/ui/Button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
@@ -12,16 +11,16 @@ import { supabase } from '@/app/utils/createClient'
 import { useRouter } from 'next/router'
 import { getCurrentUserId } from '@/app/utils/getUser'
 import ProfileIcon from '@/components/ui/ProfileIcon'
-import { useUser } from '@/context/UserContext'
+import { UserProvider, useUser } from '@/context/UserContext'
+import { getTechpacksForUser } from '@/app/services/db'
+import ProfileAccount from '@/components/ui/ProfileAccount'
+import Home from '@/components/ui/Home'
+import NavBar from '@/components/NavBar'
 
 const Dashboard = ()  => {
     const { user } = useUser();
     const router = useRouter();
     const [userId, setUserId] = useState('');
-    // const [user] = useState({
-    //     name: "Wyatt Sommer",
-    //     company: "humanhood WORLD",
-    // })
     const [techpacks, setTechPacks] = useState<TechpackVersion[]>();
 
     useEffect(() => {
@@ -53,7 +52,26 @@ const Dashboard = ()  => {
         }
     };
 
-    fetchTechpacks();
+    const fetchTechpacks2 = async () => {
+        try {
+          if (userId) {
+            const response = await getTechpacksForUser(userId);
+            
+          
+            if (!response) {
+              throw new Error('Network response was not ok');
+            }
+           
+            setTechPacks(response);
+            console.log(`${JSON.stringify(response)}`)
+          }
+        } catch (error) {
+          console.error('Failed to fetch techpacks data:', error);
+        }
+    };
+    fetchTechpacks2();
+    // Comment out for now
+    // fetchTechpacks();
   }, [userId]);
 
 
@@ -67,24 +85,16 @@ const Dashboard = ()  => {
 
 
   return (
+  <UserProvider>
     <div className="min-h-screen bg-white font-sans flex">
       {/* Sidebar */}
         <Sidebar />
 
       {/* Main content */}
       <div className="flex-1">
-        <header className="flex justify-between items-center py-3 px-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <div className="flex items-center">
-            <span className="mr-2 text-sm font-medium">{user.name}</span>
-            <span className="mr-2 text-xs text-gray-500">{user.company}</span>
-            {/* <Avatar className="h-8 w-8">
-              <AvatarImage src="/placeholder.svg?height=32&width=32" alt={user.name} />
-              <AvatarFallback>WS</AvatarFallback>
-            </Avatar> */}
-            <ProfileIcon className="h-8 w-8" name={user.name} url=""/> 
-            <ChevronRight className="ml-1 h-4 w-4 text-gray-400" />
-          </div>
+        <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
+          <Home />
+          <NavBar />
         </header>
 
         <main className="p-6">
@@ -132,6 +142,8 @@ const Dashboard = ()  => {
         </main>
       </div>
     </div>
+  </UserProvider>
+
   )
 }
 

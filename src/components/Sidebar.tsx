@@ -48,7 +48,6 @@ const Sidebar= () => {
   return (
     <UserProvider>
     <aside className="w-64 bg-[#F8FAFC] border-r border-gray-200 p-6">
-      <Home/>
     <nav>
       <Link href={`/profile/${user?.id}`} passHref>
         <Button variant="ghost" className={`w-full justify-start mb-2 ${isActive(`/profile/${user?.id}`)}`}>
@@ -62,14 +61,6 @@ const Sidebar= () => {
             Dashboard
           </Button>
       </Link>
-      {/* <Button 
-        onClick={() => router.push(`/profile/${userId}`)} 
-        variant="ghost" 
-        className={`w-full justify-start mb-2 ${pathname === `/profile/${userId}` ? 'text-[#3366FF] bg-[#EBF3FF]' : 'text-gray-600 hover:bg-[#EBF3FF] hover:text-[#3366FF]'}`}
-      >
-        <LayoutDashboard className="mr-2 h-4 w-4" />
-        Dashboard
-      </Button> */}
     </nav>
     <Button 
       onClick={handleSignOut}
