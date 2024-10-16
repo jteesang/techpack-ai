@@ -5,8 +5,6 @@ import { FormValues } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { generateUuid } from '@/app/utils/generateUuid';
-import Home from '@/components/ui/Home';
-import NavBar from '@/components/NavBar';
 
 interface TechpackProps {
   techpackId: string;
@@ -136,7 +134,7 @@ const TechpackPage = () => {
       <InputForm
         formValues={formValues}
         onChange={handleChange}
-        onSubmit={() => handleSubmit}
+        onSubmit={handleSubmit}
         selectedSizing={formValues.sizing_preference}
         onSizingChange={handleSizingChange}
         onColorChange={handleColorChange}

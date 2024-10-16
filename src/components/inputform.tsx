@@ -1,9 +1,8 @@
-import Image from 'next/image'
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Textarea } from "@/components/ui/Textarea"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/Select"
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { FormValues } from '@/app/types'
 import { useState, ChangeEvent } from 'react'
 import { useRouter } from 'next/router'
@@ -14,7 +13,7 @@ import Footer from './ui/Footer'
 interface TechpackFormProps {
   formValues: FormValues;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onSubmit: () => void;
+  onSubmit: (e: React.FormEvent) => void;
   selectedSizing: string;
   onSizingChange: (sizing: string) => void;
   onColorChange: (color: string) => void;
