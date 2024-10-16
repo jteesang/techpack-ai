@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import Home from "@/components/ui/Home"
 import { UserProvider, useUser } from "@/context/UserContext"
 import NavBar from "@/components/NavBar"
+import Footer from "@/components/ui/Footer"
 
 
 const UploadOrDescribe: React.FC = () => {
@@ -29,7 +30,7 @@ const UploadOrDescribe: React.FC = () => {
         </header>
 
         <main className="flex-grow flex items-center justify-center">
-          <Card className="max-w-4xl w-full bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 rounded-3xl shadow-none border border-[#D1E2FF]">
+          <Card className="max-w-3xl w-full bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 rounded-3xl shadow-none border border-[#D1E2FF]">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-4">Unlock the Future of Fashion Design with Techpack.ai</h1>
             </div>
@@ -56,6 +57,7 @@ const UploadOrDescribe: React.FC = () => {
           </Card>
         </main>
       </div>
+      <Footer />
     </UserProvider>
 
   );

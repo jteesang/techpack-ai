@@ -43,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             cacheControl: '3600',
             upsert: false,
           });
-    
+
         if (uploadError) {
           console.error(uploadError);
           throw new Error('Failed to upload the file');
@@ -61,7 +61,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       // Call AI service to generate description
       const description = await generateDescription(publicUrl);
       let uploadinfo_object: UploadInfo;
-      console.log(`description: ${description}`)
+      console.log(`description: ${JSON.stringify(description)}`)
 
       if (description.content) {
         uploadinfo_object = JSON.parse(description.content) as UploadInfo;
@@ -72,16 +72,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         } else {
           res.status(400).send('Failed to process upload information.');
         }
-      } 
+      } else {
+        res.status(404).send('Failed to get upload information.');
+      }
   });
-
-    // const { data } = await axios.post(`${baseUrl}/upload`, req, {
-    //   responseType: "stream",
-    //   headers: {
-    //     "Content-Type": req.headers["content-type"], // which is multipart/form-data with boundary included
-    //   },
-    // });
-    // data.pipe(res);
   } else if (req.method == "GET") {
 
     // Check if ID is provided and is a string
