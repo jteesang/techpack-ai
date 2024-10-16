@@ -60,7 +60,7 @@ export const generateDescription = async (imageUrl: string) => {
         content: [
           {
             type: "text",
-            text: "Analyze the garment sketch and provide a description using the specified structure output. If no specified description, return 'None' as the value for the field.",
+            text: "Act as a fashion designer and intricately analyze the garment sketch with precision and provide a detailed description using the specified structure output. If no specified description, return 'None' as the value for the field.",
           },
         ],
       },
