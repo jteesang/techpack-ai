@@ -3,7 +3,7 @@ import TechpackAIlogo from '@/app/assets/TechpackAIlogo.svg'
 
 const Footer = () => {
   return (
-    <div className="pt-8">
+    <div className="">
       <footer className="bg-gradient-to-t from-[#6BFFF2] via-[#66F9F3] to-[#F8FAFC] pt-16 pb-8">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-[3fr_4fr_4fr_4fr] gap-2">

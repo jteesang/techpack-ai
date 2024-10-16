@@ -22,7 +22,6 @@ const AuthCallback = () => {
 
       if (session) {
         const user = session.user;
-        console.log(`user -----------: ${JSON.stringify(user)}`)
         setUserId(user.id);
 
         // Insert or update user in the 'users' table
@@ -40,16 +39,6 @@ const AuthCallback = () => {
         } else {
           console.log('User successfully inserted:', data);
         }
-
-        // // Deconstruct object
-        // const { id,  email } = user
-        // const name = user.identities ? user.identities[0]?.identity_data?.name || '' : '';
-        // const avatar_url = user.user_metadata?.avatar_url || '';
-        // const newUser: UserDetails = {id : id, name: name, email: email, avatar_url: avatar_url}
-
-        // // Set user in the React Context
-        // setUser(newUser);
-        // Redirect to profile page or dashboard
         if (session && user) {
           router.push(`/profile/${user.id}`)
         }
