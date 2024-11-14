@@ -2,13 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-This repository contains only the frontend pages and middleware. There is a separate repository (https://github.com/jteesang/techpack-ai-backend.git) containing the backend built using Express.
-
 1. Configure your environment variables by creating a ```.env``` file with the following env vars:
     ```
     NEXT_PUBLIC_API_URL=
+    NEXT_PUBLIC_SUPABASE_URL=
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=
+    NEXT_PUBLIC_OPENAI_API_KEY=
+    NEXT_PUBLIC_REDIRECT_URL=
     ```
-    Note: Ensure that your backend server and Nextjs app are running on different ports.
 
 2. Then, run the development server:
 
