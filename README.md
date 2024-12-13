@@ -2,19 +2,30 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+1. Configure your environment variables by creating a ```.env``` file with the following env vars:
+    ```
+    NEXT_PUBLIC_API_URL=
+    NEXT_PUBLIC_SUPABASE_URL=
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=
+    NEXT_PUBLIC_OPENAI_API_KEY=
+    NEXT_PUBLIC_REDIRECT_URL=
+    ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Then, run the development server:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```bash
+    npm run dev
+    # or
+    yarn dev
+    # or
+    pnpm dev
+    # or
+    bun dev
+    ```
+
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. 
+    
+    Note: You may need to update the port depending on what port your backend server is running on.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
