@@ -17,6 +17,9 @@ const AuthDialog: React.FC = () => {
   const handleGoogleSignIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo: redirectTo
+      }
     });
 
     if (error) {

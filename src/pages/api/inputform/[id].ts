@@ -34,15 +34,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const response = await saveTechpackForm(body as unknown as TechpackForm);
       return res.status(200).json(response);
     });
-
-
-
-
-
-
-    // console.log(`[id].ts body: ${JSON.stringify(body)}`)
-    // const response = await saveTechpackForm(body as unknown as TechpackForm);
-    // res.status(200).send(response)
   } 
   else if (req.method == "GET") {
     const inputForm = await getTechpackForm(id);

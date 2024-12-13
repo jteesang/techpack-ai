@@ -49,7 +49,6 @@ export const getImageUrl = async (id: string) => {
 }
 
 export const saveTechpackForm = async (data: TechpackForm) => {
-  console.log(`db.ts: ${JSON.stringify(data)}`)
   const { data: insertedData, error } = await supabase
     .from('techpacks')
     .insert([data])

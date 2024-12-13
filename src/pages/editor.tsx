@@ -5,6 +5,8 @@ import { Designer } from '@pdfme/ui';
 import { Template, BLANK_PDF } from '@pdfme/common';
 import { useEffect, useRef } from 'react';
 import Home from '@/components/ui/Home';
+import NavBar from '@/components/NavBar';
+import Footer from '@/components/ui/Footer';
 
 export const Editor = () => {
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -1505,76 +1507,36 @@ export const Editor = () => {
       }, [template]); // Only re-run if template changes
 
     return (
-        <div>
-        <header className="flex justify-between items-center py-3 px-6 border-b border-gray-200">
-        <Home/>
-        <div className="flex items-center">
-          <span className="mr-2 text-sm font-medium">Wyatt Sommer</span>
-          <span className="mr-2 text-xs text-gray-500">humanhood WORLD</span>
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Wyatt Sommer" />
-            <AvatarFallback>WS</AvatarFallback>
-          </Avatar>
-          <ChevronRight className="ml-1 h-4 w-4 text-gray-400" />
-        </div>
+      <div className="min-h-screen flex flex-col bg-white">
+        <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
+          <Home />
+          <NavBar />
         </header>
-            <h1>Editor</h1>
-            <div
-            ref={containerRef}
-            style={{ width: '100%', height: '100vh' }} // Adjust styles as needed
-            >
-            {/* The Designer will be rendered inside this div */}
-            </div>
-        <footer className="bg-gradient-to-t from-[#6BFFF2] via-[#66F9F3] to-white pt-16 pb-8">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-4 gap-8">
-            <div>
-              <Image src="/placeholder.svg?height=48&width=48" alt="techpack.ai" width={48} height={48} className="mb-4" />
+        <main className="flex-grow p-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold text-blue-600">Techpack Generated</h1>
               <div className="flex space-x-4">
-                {['linkedin', 'facebook', 'twitter', 'instagram'].map((social) => (
-                  <a key={social} href="#" className="text-gray-600 hover:text-gray-900">
-                    <span className="sr-only">{social}</span>
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                    </svg>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Demo video</h3>
-              <h3 className="font-semibold mb-4">Features</h3>
-              <h3 className="font-semibold mb-4">Pricing</h3>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Log In</h3>
-              <h3 className="font-semibold mb-4">Sign UP</h3>
-              <h3 className="font-semibold mb-4">Help</h3>
-            </div>
-            <div>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Type your email"
-                  className="flex-grow px-4 py-2 rounded-l-full bg-gradient-to-r from-blue-500 to-blue-400 text-white placeholder-white"
-                />
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-r-full">
-                  Subscribe
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-full flex items-center">
+                  button1
+                </button>
+                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-full flex items-center">
+                  button2
                 </button>
               </div>
-              <div className="mt-4 text-sm text-gray-600">
-                <a href="#" className="hover:text-gray-900">Terms of service</a>
-                {' · '}
-                <a href="#" className="hover:text-gray-900">Privacy policy</a>
+            </div>
+            <div className="bg-gray-100 p-8 rounded-lg">
+              <h2 className="text-3xl font-bold mb-2">PDF Editor</h2>
+              <div
+                ref={containerRef}
+                style={{ width: '100%', height: '100vh' }} // Adjust styles as needed
+              >
               </div>
             </div>
           </div>
-          <div className="mt-12 text-center text-sm text-gray-600">
-            ©2024 techpack.ai LLC
-          </div>
-        </div>
-        </footer>
-        </div>
+        </main>
+        <Footer />
+      </div>
     )
 }
 export default Editor;
