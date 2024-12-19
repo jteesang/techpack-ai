@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Plus, ArrowRight, ChevronDown, Play, Check } from 'lucide-react';
+import CheckoutForm from './CheckoutForm';
 
 interface PageCardProps {
   title: string;
   description: string;
   image: string;
 }
-
 interface PricingPlanProps {
   name: string;
   icon: string;
@@ -153,30 +153,33 @@ const PageCard: React.FC<{ card: PageCardProps }> = ({ card }) => (
   </div>
 );
 
-const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => (
-  <div className={`w-full rounded-tl-2xl border-t border-l ${plan.bgColor} p-6 flex flex-col`}>
-    <div className={`text-4xl mb-4 ${plan.iconBgColor} w-16 h-16 flex items-center justify-center rounded-full`}>
-      {plan.icon}
+const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => {
+  return (
+    <div className={`w-full rounded-tl-2xl border-t border-l ${plan.bgColor} p-6 flex flex-col`}>
+      <div className={`text-4xl mb-4 ${plan.iconBgColor} w-16 h-16 flex items-center justify-center rounded-full`}>
+        {plan.icon}
+      </div>
+      <h3 className="text-3xl font-bold text-[#0047FF] mb-2">{plan.name}</h3>
+      <div className="text-4xl font-bold mb-1">
+        {plan.price} {plan.perUser && <span className="text-lg font-normal text-gray-600">{plan.perUser}</span>}
+      </div>
+      <hr className="border-t border-gray-200 my-4" />
+      <ul className="space-y-4 mb-auto">
+        {plan.features.map((feature, index) => (
+          <li key={index} className="flex items-start">
+            <Check className="h-6 w-6 text-green-500 mr-2 mt-1 flex-shrink-0" />
+            <span className="text-lg">{feature}</span>
+          </li>
+        ))}
+      </ul>
+      <button className={`w-full h-[60px] rounded-[24px] flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold`}>
+        <ArrowRight className="h-5 w-5" />
+        <CheckoutForm uiMode={'embedded'} planId={plan.name} />
+      </button>
     </div>
-    <h3 className="text-3xl font-bold text-[#0047FF] mb-2">{plan.name}</h3>
-    <div className="text-4xl font-bold mb-1">
-      {plan.price} {plan.perUser && <span className="text-lg font-normal text-gray-600">{plan.perUser}</span>}
-    </div>
-    <hr className="border-t border-gray-200 my-4" />
-    <ul className="space-y-4 mb-auto">
-      {plan.features.map((feature, index) => (
-        <li key={index} className="flex items-start">
-          <Check className="h-6 w-6 text-green-500 mr-2 mt-1 flex-shrink-0" />
-          <span className="text-lg">{feature}</span>
-        </li>
-      ))}
-    </ul>
-    <button className={`w-full h-[60px] rounded-[24px] flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold`}>
-      <span className="mr-2">Get Started</span>
-      <ArrowRight className="h-5 w-5" />
-    </button>
-  </div>
-);
+  );
+}
+
 
 const CircleDiagram: React.FC<CircleDiagramProps> = ({ title, percentage, description }) => (
   <div className="relative w-full max-w-[350px] aspect-square">
