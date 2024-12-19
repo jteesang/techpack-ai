@@ -43,11 +43,11 @@ export default function CheckoutForm({ uiMode, planId }: CheckoutFormProps & { p
     <>
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="planId" value={planId} />
-        <section className="bg-white flex flex-col w-[400px] h-[112px] rounded-lg justify-between p-4">
+        <section className="flex flex-col w-full h-full rounded-lg justify-between p-4">
           <button
             type="submit"
             role="link"
-            className="h-9 bg-[#556cd6] rounded-md text-white font-semibold shadow-md transition-all duration-200 ease-in-out hover:opacity-80"
+            className="h-9 rounded-md font-semibold transition-all duration-200 ease-in-out hover:opacity-80"
           >
             Get Started
           </button>

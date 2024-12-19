@@ -50,7 +50,7 @@ const pricingPlans: PricingPlanProps[] = [
     perUser: "per user",
     features: ["60 Tech packs / year (60 Credits)", "1 Regeneration for each tech pack"],
     bgColor: "bg-white",
-    buttonColor: "bg-white text-[#0047FF] border-2 border-[#0374FC]",
+    buttonColor: "bg-[#0047FF] text-white border-2 border-[#0374FC]",
     iconBgColor: "bg-blue-100",
   },
   {
@@ -60,7 +60,7 @@ const pricingPlans: PricingPlanProps[] = [
     perUser: "per user",
     features: ["180 Tech packs / year (180 Credits)", "2 Regenerations for each tech pack"],
     bgColor: "bg-gradient-to-b from-[rgba(120,189,0,0.5)] to-[rgba(241,255,43,0.5)]",
-    buttonColor: "bg-[#0047FF] text-white",
+    buttonColor: "bg-[#0047FF] text-white border-2 border-[#0374FC]",
     iconBgColor: "bg-green-100",
   },
   {
@@ -70,12 +70,9 @@ const pricingPlans: PricingPlanProps[] = [
     perUser: "per user",
     features: ["300 Tech packs / year (300 Credits)", "3 Regenerations for each tech pack"],
     bgColor: "bg-white",
-    buttonColor: "bg-white text-[#0047FF] border-2 border-[#0374FC]",
+    buttonColor: "bg-[#0047FF] text-white border-2 border-[#0374FC]",
     iconBgColor: "bg-yellow-100",
   },
-];
-
-const additionalPlans: PricingPlanProps[] = [
   {
     name: "Enterprise",
     icon: "🏢",
@@ -83,7 +80,7 @@ const additionalPlans: PricingPlanProps[] = [
     perUser: "per user",
     features: ["500 Tech packs / year (500 Credits)", "3 Regenerations for each tech pack"],
     bgColor: "bg-white",
-    buttonColor: "bg-white text-[#0047FF] border-2 border-[#0374FC]",
+    buttonColor: "bg-[#0047FF] text-white border-2 border-[#0374FC]",
     iconBgColor: "bg-blue-100",
   },
   {
@@ -91,7 +88,7 @@ const additionalPlans: PricingPlanProps[] = [
     icon: "💰",
     price: "$12/Pack",
     features: ["1 Credit = 1 Completed tech pack (Includes 1 free Regeneration)"],
-    bgColor: "bg-white",
+    bgColor: "bg-gradient-to-b from-[rgba(120,189,0,0.5)] to-[rgba(241,255,43,0.5)]",
     buttonColor: "bg-[#0047FF] text-white",
     iconBgColor: "bg-blue-100",
   },
@@ -155,7 +152,7 @@ const PageCard: React.FC<{ card: PageCardProps }> = ({ card }) => (
 
 const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => {
   return (
-    <div className={`w-full rounded-tl-2xl border-t border-l ${plan.bgColor} p-6 flex flex-col`}>
+    <div className={`w-full rounded-2xl border ${plan.bgColor} p-6 flex flex-col shadow-lg`}>
       <div className={`text-4xl mb-4 ${plan.iconBgColor} w-16 h-16 flex items-center justify-center rounded-full`}>
         {plan.icon}
       </div>
@@ -172,7 +169,7 @@ const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => {
           </li>
         ))}
       </ul>
-      <button className={`w-full h-[60px] rounded-[24px] flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold`}>
+      <button className={`w-full h-[60px] shadow-md rounded-[24px] flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold`}>
         <ArrowRight className="h-5 w-5" />
         <CheckoutForm uiMode={'embedded'} planId={plan.name} />
       </button>
@@ -329,11 +326,11 @@ const TechpackLanding: React.FC = () => {
                 {pricingPlans.map((plan, index) => (
                   <PricingCard key={index} plan={plan} />
                 ))}
-              </div>
+              {/* </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {additionalPlans.map((plan, index) => (
                   <PricingCard key={index} plan={plan} />
-                ))}
+                ))} */}
               </div>
             </div>
           </section>
