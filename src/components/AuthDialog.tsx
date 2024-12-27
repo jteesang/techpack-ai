@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import TechpackAIlogo from '@/app/assets/TechpackAIlogo.svg'
+import Google from '@/app/assets/Google.svg';
 import { Button } from "@/components/ui/Button"
 import { Card } from "@/components/ui/Card"
 import { ChevronRight } from 'lucide-react'
@@ -45,20 +46,23 @@ const AuthDialog: React.FC = () => {
             <span className="ml-2 text-2xl font-bold text-[#3366FF]">techpack.ai</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">Log in to your account</h1>
-          <Button
-            onClick={handleGoogleSignIn}
-            className="w-full bg-[#3366FF] hover:bg-[#2952CC] text-white rounded-full py-2 text-base font-semibold flex items-center justify-center"
-          >
-            <Image src="/placeholder.svg?height=20&width=20" alt="Google" width={20} height={20} className="mr-2" />
-            Continue with Google
-            <ChevronRight className="ml-2 h-5 w-5" />
-          </Button>
-          <Button
-            className="w-full bg-[#3366FF] hover:bg-[#2952CC] text-white rounded-full py-2 text-base font-semibold flex items-center justify-center">
-            Cancel
-          </Button>
+          <div className="flex flex-col items-center space-y-2">
+            <Button
+              onClick={handleGoogleSignIn}
+              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-full py-2 text-base font-semibold flex items-center justify-center"
+            >
+              <Image src={Google} alt="Google" width={20} height={20} className="mr-2" />
+              Continue with Google
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button
+              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-full py-2 text-base font-semibold flex items-center justify-center">
+              Cancel
+            </Button>
+          </div>
+
           <p className="mt-6 text-center text-sm text-gray-500">
-            Don't have an account? <a href="#" className="font-medium text-[#3366FF] hover:underline">Sign up</a>
+            Don't have an account? <a href="/" className="font-medium text-[#3366FF] hover:underline">See more</a>
           </p>
         </Card> 
       </div>

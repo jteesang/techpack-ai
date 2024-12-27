@@ -37,7 +37,7 @@ export default function InputForm({ formValues, onChange, onSubmit, selectedSizi
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-jost">
-      <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
+      <header className="flex justify-between items-center py-3 px-6 bg-gradient-to-b from-[#F8FAFC] via-[#E7F0FF] to-[#E1ECFF] p-8 shadow-none border border-[#D1E2FF]">
           <Home />
           <NavBar />
       </header>

@@ -163,7 +163,7 @@ return (
           <Card className="bg-gradient-to-b from-[#EBF3FF] via-[#E7F0FF] to-[#E1ECFF] p-8 rounded-3xl shadow-none border border-[#D1E2FF]">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center">
-                <ProfileIcon className="h-20 w-20 mr-4" name={formData.name} url={formData.avatar_url}/>
+                <ProfileIcon className="h-20 w-20 mr-4" name={formData.name} url={formData.avatar_url} placeholder={'Account'}/>
               <div>
                   <h2 className="text-2xl font-bold text-gray-900">{formData.name}</h2>
                   {/* <p className="text-sm text-gray-500">humanhood WORLD</p> */}

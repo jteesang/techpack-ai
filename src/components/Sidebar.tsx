@@ -47,29 +47,30 @@ const Sidebar= () => {
   
   return (
     <UserProvider>
-    <aside className="w-64 bg-[#F8FAFC] border-r border-gray-200 p-6">
-    <nav>
-      <Link href={`/profile/${user?.id}`} passHref>
-        <Button variant="ghost" className={`w-full justify-start mb-2 ${isActive(`/profile/${user?.id}`)}`}>
-          <User className="mr-2 h-4 w-4" />
-          Profile
+      <aside className="w-64 bg-[#F8FAFC] border-r border-gray-200 p-6">
+        <nav>
+          <Link href={`/profile/${user?.id}`} passHref>
+            <Button variant="ghost" className={`w-full justify-start mb-2 ${isActive(`/profile/${user?.id}`)}`}>
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </Button>
+          </Link>
+          <Link href={`/dashboard/${user?.id}`} passHref>
+              <Button variant="ghost" className={`w-full justify-start mb-2 ${isActive(`/dashboard/${user?.id}`)}`}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+          </Link>
+  
+        </nav>
+        <Button
+          onClick={handleSignOut}
+          variant="ghost"
+          className="w-52 justify-start mt-auto text-gray-600 hover:bg-[#EBF3FF] hover:text-[#3366FF] absolute bottom-6">
+          <LogOut className="mr-2 h-4 w-4" />
+          Log out
         </Button>
-      </Link>
-      <Link href={`/dashboard/${user?.id}`} passHref>
-          <Button variant="ghost" className={`w-full justify-start mb-2 ${isActive(`/dashboard/${user?.id}`)}`}>
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            Dashboard
-          </Button>
-      </Link>
-    </nav>
-    <Button 
-      onClick={handleSignOut}
-      variant="ghost" 
-      className="w-full justify-start mt-auto text-gray-600 hover:bg-[#EBF3FF] hover:text-[#3366FF] absolute bottom-6">
-      <LogOut className="mr-2 h-4 w-4" />
-      Log out
-    </Button>
-    </aside>
+      </aside>
     </UserProvider>
 
   );
