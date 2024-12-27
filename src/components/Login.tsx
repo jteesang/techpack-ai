@@ -18,17 +18,20 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="relative">
+        <div className="relative space-y-4">
             {session ? (
-                <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded" 
-                  onClick = {handleNavigateToProfile}
-                >
-                Profile
-                </button>
+                <div>
+                    
+                </div>
+                // <button
+                //   className="bg-[#0047FF] text-white px-4 py-2 rounded-full hover:opacity-80" 
+                //   onClick = {handleNavigateToProfile}
+                // >
+                // Profile
+                // </button>
             ) : (
                 <button 
-                  className="bg-green-500 text-white px-4 py-2 rounded" 
+                  className="bg-[#0047FF] text-white px-4 py-2 rounded-full hover:opacity-80" 
                   onClick={handleGoogleLogin}
                 >
                 Login

@@ -17,7 +17,7 @@ const NavBar: React.FC<NavBarProps> = () => {
         <Link href={`/profile/${user?.id}`} passHref>
           <div className="flex items-center">
             <ProfileAccount className="mr-2" name={user?.user_metadata.full_name} />
-            <ProfileIcon className="h-8 w-8" name={user?.user_metadata.full_name} url={user?.user_metadata.avatar_url} />
+            <ProfileIcon className="h-8 w-8" name={user?.user_metadata.full_name} url={user?.user_metadata.avatar_url} placeholder={'Account'} />
           </div>
         </Link>
       </div>

@@ -47,7 +47,7 @@ export default function CheckoutForm({ uiMode, planId }: CheckoutFormProps & { p
           <button
             type="submit"
             role="link"
-            className="h-9 rounded-md font-semibold transition-all duration-200 ease-in-out hover:opacity-80"
+            className="h-9 font-semibold transition-all duration-200 ease-in-out"
           >
             Get Started
           </button>
