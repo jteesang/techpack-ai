@@ -1,15 +1,15 @@
 import { text, image, line, multiVariableText, barcodes, rectangle } from '@pdfme/schemas';
 import { generate } from "@pdfme/generator";
-import { testTemplate } from "./template";
-import { inputs } from "./prepare";
+import { coverPageTemplate, testTemplate } from "./template";
+import { coverPageTestInputs, inputs } from "./prepare";
 import { Viewer } from '@pdfme/ui';
 
 export const generateTestPDF = async (): Promise<Blob> => {
   // const [inputs, inputsError] = prepareInputs();
 
   const pdf = await generate({
-    template: testTemplate,
-    inputs: [inputs],
+    template: coverPageTemplate,
+    inputs: [coverPageTestInputs],
     plugins: {
       text, image, line, rectangle, multiVariableText,
       qrcode: barcodes.qrcode
@@ -27,8 +27,8 @@ export const generateTestPDF = async (): Promise<Blob> => {
 export const generateViewPDF = async (domContainer: HTMLElement) => {
   return new Viewer({
     domContainer: domContainer,
-    template: testTemplate,
-    inputs: [inputs],
+    template: coverPageTemplate,
+    inputs: [coverPageTestInputs],
     plugins: {
       text,
       image,

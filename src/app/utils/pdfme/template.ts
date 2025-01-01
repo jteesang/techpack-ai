@@ -1,4 +1,147 @@
 import { Template } from '@pdfme/common';
+
+export const coverPageTemplate: Template = {
+    schemas: [
+      {
+        // Header Information
+        companyName: {
+          name: "companyName",
+          type: "text",
+          position: { x: 20, y: 20 },
+          width: 150,
+          height: 15,
+        },
+        website: {
+          name: "website",
+          type: "text",
+          position: { x: 20, y: 35 },
+          width: 200,
+          height: 15,
+        },
+        coverLabel: {
+          name: "coverLabel",
+          type: "text",
+          position: { x: 450, y: 20 },
+          width: 100,
+          height: 15,
+        },
+        styleInfo: {
+          name: "styleInfo",
+          type: "text",
+          position: { x: 450, y: 35 },
+          width: 150,
+          height: 15,
+        },
+
+        // Left Column Fields
+        styleNumber: {
+          name: "styleNumber",
+          type: "text",
+          position: { x: 20, y: 70 },
+          width: 120,
+          height: 15,
+        },
+        name: {
+          name: "name",
+          type: "text",
+          position: { x: 20, y: 90 },
+          width: 120,
+          height: 15,
+        },
+        season: {
+          name: "season",
+          type: "text",
+          position: { x: 20, y: 110 },
+          width: 120,
+          height: 15,
+        },
+        vendor: {
+          name: "vendor",
+          type: "text",
+          position: { x: 20, y: 130 },
+          width: 120,
+          height: 15,
+        },
+        createdBy: {
+          name: "createdBy",
+          type: "text",
+          position: { x: 20, y: 150 },
+          width: 120,
+          height: 15,
+        },
+        dateSent: {
+          name: "dateSent",
+          type: "text",
+          position: { x: 20, y: 170 },
+          width: 120,
+          height: 15,
+        },
+
+        // Right Column Fields
+        calendar: {
+          name: "calendar",
+          type: "multiVariableText",
+          position: { x: 250, y: 70 },
+          width: 300,
+          height: 120,
+          content: '{"dates":"", "status":""}',
+          text: "{dates}\n{status}",
+          variables: ["dates", "status"]
+        },
+
+        // Main Design Images
+        designImage1: {
+          name: "designImage1",
+          type: "image",
+          position: { x: 20, y: 200 },
+          width: 250,
+          height: 300
+        },
+        designImage2: {
+          name: "designImage2",
+          type: "image",
+          position: { x: 280, y: 200 },
+          width: 250,
+          height: 300
+        },
+
+        // Revisions Table
+        revisionsTitle: {
+          name: "revisionsTitle",
+          type: "text",
+          position: { x: 20, y: 520 },
+          width: 100,
+          height: 15,
+        },
+        revisionTable: {
+          name: "revisionTable",
+          type: "multiVariableText",
+          position: { x: 20, y: 540 },
+          width: 510,
+          height: 100,
+          content: '{"revisions":""}',
+          text: "{revisions}",
+          variables: ["revisions"]
+        },
+
+        // Footer
+        pageNumber: {
+          name: "pageNumber",
+          type: "text",
+          position: { x: 20, y: 650 },
+          width: 510,
+          height: 15,
+        }
+      }
+    ],
+    basePdf: {
+      width: 550,
+      height: 700,
+      padding: [20, 20, 20, 20]
+    },
+    pdfmeVersion: "5.0.0"
+  };
+
 // test template
 export const testTemplate: Template = {
   schemas: [
