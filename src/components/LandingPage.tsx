@@ -19,6 +19,7 @@ import Inspiration from '@/app/assets/Inspiration.png';
 import LabelPlacements from '@/app/assets/LabelPlacements.png';
 import PhotoSpecs from '@/app/assets/PhotoSpecs.png';
 import PrintFabric from '@/app/assets/PrintFabric.png';
+import { useUser } from '@/context/UserContext';
 
 interface PageCardProps {
   title: string;
@@ -114,6 +115,8 @@ const pricingPlans: PricingPlanProps[] = [
 
 // Components
 const Header: React.FC = () => {
+  const { user } = useUser();
+
   return (
     // TODO - old header
     // <header className="flex justify-between items-center py-4 px-8">
@@ -149,10 +152,8 @@ const Header: React.FC = () => {
         </div>
       </button> */}
       <div className="flex flex-row">
-        <NavBar />
-        <Login />
+        {!user ? <Login /> : <NavBar/>}
       </div>
-
     </header>
   )
 
