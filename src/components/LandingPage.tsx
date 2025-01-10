@@ -163,7 +163,7 @@ const PageCard: React.FC<{ card: PageCardProps }> = ({ card }) => (
   <div className="w-full bg-white rounded-[48px] shadow-lg overflow-hidden">
     <div className="p-6 flex flex-col md:flex-row">
       <div className="w-full md:w-1/2 pr-4 mb-4 md:mb-0">
-        <Image src={card.image} alt={card.title} layout="fixed" width={200} height={150} className="object-cover rounded-xl" />
+        <Image src={card.image} alt={card.title} width={200} height={150} className="object-cover rounded-xl" />
       </div>
       <div className="w-full md:w-1/2 pl-4">
         <h3 className="text-xl font-semibold text-[#0047FF] mb-2">{card.title}</h3>
