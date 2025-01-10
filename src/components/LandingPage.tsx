@@ -192,10 +192,10 @@ const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => {
           </li>
         ))}
       </ul>
-      <button className={`w-full h-[60px] shadow-md rounded-full flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold hover:opacity-80`}>
+      <div className={`w-full h-[60px] shadow-md rounded-full flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold hover:opacity-80`}>
         <CheckoutForm uiMode={'embedded'} planId={plan.name} />
         <ArrowRight className="h-5 w-5" />
-      </button>
+      </div>
     </div>
   );
 }
