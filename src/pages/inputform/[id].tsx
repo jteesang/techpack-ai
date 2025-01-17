@@ -54,7 +54,7 @@ const TechpackPage = () => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append('id', techpackId); // Use the techpackId from the previous page
+    // formData.append('id', techpackId); // Use the techpackId from the previous page
     Object.entries(formValues).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
@@ -77,10 +77,10 @@ const TechpackPage = () => {
       const result = await response.json()
       console.log(`result: ${(result)}`)
       router.push(`/viewer/${techpackId}`)
-      // console.log('Success:', result);
-
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,14 +131,27 @@ const TechpackPage = () => {
 
   return (
     <div>
-      <InputForm
-        formValues={formValues}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        selectedSizing={formValues.sizing_preference}
-        onSizingChange={handleSizingChange}
-        onColorChange={handleColorChange}
-      />
+      {loading ? (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-100 bg-opacity-50">
+          <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="flex justify-center items-center">
+              <div className="mr-4">
+                <div className="w-10 h-10 rounded-full border-2 border-blue-500 border-r-transparent animate-spin"></div>
+              </div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <InputForm
+          formValues={formValues}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          selectedSizing={formValues.sizing_preference}
+          onSizingChange={handleSizingChange}
+          onColorChange={handleColorChange}
+        />
+      )}
     </div>
   );
 };
