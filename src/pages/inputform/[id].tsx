@@ -4,6 +4,7 @@ import InputForm from '@/components/inputform';
 import { FormValues, TechpackForm } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useUser } from '@/context/UserContext';
 
 interface TechpackProps {
   techpackId: string;
@@ -11,6 +12,7 @@ interface TechpackProps {
 
 const TechpackPage = () => {
   const router = useRouter();
+  const {user} = useUser();
   const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -54,7 +56,11 @@ const TechpackPage = () => {
     setLoading(true);
 
     const formData = new FormData();
-    // formData.append('id', techpackId); // Use the techpackId from the previous page
+
+    if (user?.id) {
+      formData.append('user_id', user.id);
+    }
+    
     Object.entries(formValues).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
