@@ -38,20 +38,21 @@ export const getImageUrl = async (id: string) => {
   const { data: imageUrl, error } = await supabase
   .from('uploads')
   .select('image_path')
-  .eq('id', id)
+  .eq('id', '003d4a4d-771a-47e3-aaec-01b9b6f060a0')
   .single()
 
   if (error) {
     console.error('Error getting uploads:', error);
     throw new Error('Failed to get entry from Uploads table');
   }
+  console.log(`\n ------ imageUrl: ${imageUrl}`)
   return imageUrl;
 }
 
 export const saveTechpackForm = async (data: TechpackForm) => {
   const { data: insertedData, error } = await supabase
     .from('techpacks')
-    .insert([data])
+    .upsert([data])
   
   if (error) {
     console.error('Error inserting data:', error);
@@ -72,6 +73,33 @@ export const getTechpackForm = async (techpackId: string) => {
     throw new Error('Failed to get techpack from Techpacks table');
   }
   return techpack;
+}
+
+export const getTechpackOrCreate = async (techpackId: string, newData: TechpackForm) => {
+  const { data, error, status } = await supabase
+    .from ('techpacks')
+    .select('*')
+    .eq('id', techpackId)
+    .single()
+
+  if (error || !data) {
+    console.error('Techpack not found, creating a new one.');
+
+    const {data: insertedData, error: insertError } = await supabase
+      .from('techpacks')
+      .upsert([
+        {
+          ...newData
+        }
+      ]);
+    
+    if (insertError) {
+      console.error('Error inserting data: ', insertError);
+      throw new Error('Failed to insert new Techpack');
+    }
+    return insertedData;
+  }
+  return data;
 }
 
 export const checkTechpackFormExists = async(techpackId : string ) => {

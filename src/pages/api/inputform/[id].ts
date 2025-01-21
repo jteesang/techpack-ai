@@ -1,9 +1,10 @@
 // pages/api/techpack/[id].ts
-import { TechpackForm } from "@/app/types";
-import { getTechpackForm, saveTechpackForm } from "@/app/services/db";
+import { Techpack, TechpackForm, TechpackPages } from "@/app/types";
+import { getTechpackForm, getTechpackOrCreate, saveTechpackForm, saveTechpackPages } from "@/app/services/db";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from "formidable";
+import { getTechpackPages } from "@/app/services/ai";
 
 export const config = {
   api: {
@@ -27,18 +28,32 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Here, `fields` contains the text inputs and `files` contains file uploads
-      console.log('Fields:', fields); // Access non-file inputs
       const body = Object.fromEntries(
         Object.entries(fields).map(([key, value]) => [key, value ? value[0] || '' : ''])
       );
-      const response = await saveTechpackForm(body as unknown as TechpackForm);
-      return res.status(200).json(response);
+      console.log(`body: `, body)
+      try {
+        // const techpackFormResponse = await saveTechpackForm(body as unknown as TechpackForm); 
+        const techpackFormResponse = await getTechpackOrCreate(id, body as unknown as TechpackForm);
+        const generatePagesResponse = await getTechpackPages(body.imageUrl, techpackFormResponse as unknown as TechpackForm);
+        const savePagesResponse = await saveTechpackPages(generatePagesResponse as TechpackPages);
+        return res.status(200).json(savePagesResponse)
+      } catch (error) {
+        console.error(`Error saving and generating techpack content`, error)
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+      
     });
   } 
   else if (req.method == "GET") {
-    const inputForm = await getTechpackForm(id);
-    console.log(`getTechpackForm: ${JSON.stringify(inputForm)}`)
-    res.status(200).send(inputForm)
+    try {
+      const inputForm = await getTechpackForm(id);
+      console.log(`GET endpoint getTechpackForm: ${JSON.stringify(inputForm)}`)
+      return res.status(200).json(inputForm)
+    } catch (error) {
+      console.error(`Error fetching techpack`, error)
+      return res.status(500).json({ error: "Internal Server Error"})
+    }
   }
   else {
     return res.status(405).json({ message: "Method Not Allowed" });

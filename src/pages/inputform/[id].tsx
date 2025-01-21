@@ -57,6 +57,7 @@ const TechpackPage = () => {
 
     const formData = new FormData();
 
+    formData.append('id', techpackId);
     if (user?.id) {
       formData.append('user_id', user.id);
     }
@@ -91,19 +92,20 @@ const TechpackPage = () => {
   };
 
   const getExistingTechpack = async (techpackId: string) => {
-    try {
+    // try {
       const response = await fetch(`/api/inputform/${String(techpackId)}`, {
         method: 'GET'
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
       const result = await response.json()
       return result;
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    // } catch (error) {
+      // console.error('Error:', error);
+      // return result.status
+    // }
   }
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const TechpackPage = () => {
       const fetchTechpack = async () => {
         try {
           const response = await getExistingTechpack(techpackId)
-          if (response.status == 404 || response.status === 500) {
+          if (response.status == 404 || response.status == 500) {
             // do nothing 
             console.log('Techpack does not currently exist.')
           } else {
