@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         // const techpackFormResponse = await saveTechpackForm(body as unknown as TechpackForm); 
         const techpackFormResponse = await getTechpackOrCreate(id, body as unknown as TechpackForm);
-        const generatePagesResponse = await getTechpackPages(body.imageUrl, techpackFormResponse as unknown as TechpackForm);
+        const generatePagesResponse = await getTechpackPages(body.imageUrl, body as unknown as TechpackForm);
         const savePagesResponse = await saveTechpackPages(generatePagesResponse as TechpackPages);
         return res.status(200).json(savePagesResponse)
       } catch (error) {
@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(inputForm)
     } catch (error) {
       console.error(`Error fetching techpack`, error)
-      return res.status(500).json({ error: "Internal Server Error"})
+      return;
     }
   }
   else {
