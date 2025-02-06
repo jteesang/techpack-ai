@@ -4,12 +4,13 @@ import { coverPageTemplate, testTemplate } from "./template";
 import { coverPageTestInputs, inputs } from "./prepare";
 import { Viewer } from '@pdfme/ui';
 
-export const generateTestPDF = async (): Promise<Blob> => {
+// Helper method to generate PDF Export/Download
+export const generatePDF = async (inputs: any): Promise<Blob> => {
   // const [inputs, inputsError] = prepareInputs();
 
   const pdf = await generate({
     template: coverPageTemplate,
-    inputs: [coverPageTestInputs],
+    inputs: [inputs],
     plugins: {
       text, image, line, rectangle, multiVariableText,
       qrcode: barcodes.qrcode
@@ -24,7 +25,8 @@ export const generateTestPDF = async (): Promise<Blob> => {
   return file;
 };
 
-export const generateViewPDF = async (domContainer: HTMLElement) => {
+// Helper method to generate PDF Viewer
+export const generateViewPDF = async (domContainer: HTMLElement, inputs: any) => {
   return new Viewer({
     domContainer: domContainer,
     template: coverPageTemplate,
@@ -32,6 +34,7 @@ export const generateViewPDF = async (domContainer: HTMLElement) => {
     plugins: {
       text,
       image,
+      line,
       multiVariableText,
     }
   });

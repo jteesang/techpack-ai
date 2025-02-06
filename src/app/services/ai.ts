@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 import { zodResponseFormat } from "openai/helpers/zod";
-import { techPackSystemPrompt } from '@/constants/prompts';
+import { techpack3DVisualizationPrompt, techpackFlatSketchPrompt, techPackSystemPrompt } from '@/constants/prompts';
 import { ImageDescription, Techpack, TechpackForm } from '@/app/types/index';
 
 dotenv.config();
@@ -39,10 +39,21 @@ export const generateTechPack = async (imageUrl: string, techpackForm: TechpackF
   return response.choices[0]?.message;
 }
 
-export const generateImage = async (prompt: string) => {
+export const generateFlatSketch = async (techpackForm: TechpackForm) => {
   const response = await openai.images.generate({
     model: "dall-e-3",
-    prompt: prompt,
+    prompt: techpackFlatSketchPrompt,
+    n: 1,
+    size: "1024x1024",
+  })
+
+  return response.data[0].url
+}
+
+export const generate3DVisualization = async (techpackForm: TechpackForm) => {
+  const response = await openai.images.generate({
+    model: "dall-e-3",
+    prompt: techpack3DVisualizationPrompt,
     n: 1,
     size: "1024x1024",
   })
@@ -51,7 +62,6 @@ export const generateImage = async (prompt: string) => {
 }
 
 export const generateDescription = async (imageUrl: string) => {
-    console.log(`-------- imageURl in AI SERVICE\n: ${imageUrl}`)
   const response = await openai.beta.chat.completions.parse({
     model: "gpt-4o-2024-08-06",
     messages: [
@@ -100,17 +110,40 @@ export const getDescription = async (imageUrl: string) => {
 }
 
 // This method calls a GPT model to generate the techpack information given a description.
-export const getTechpackPages = async (imageUrl: string, techpackForm: TechpackForm) => {
+export const getTechpackContent = async (imageUrl: string, techpackForm: TechpackForm) => {
   try {
     const completion = await generateTechPack(imageUrl, techpackForm);
 
     if (completion?.parsed) {
+      console.log(`gpt generated data:\n ${JSON.stringify(completion.parsed)}`);
       return completion.parsed;
     } else {
       return completion.refusal;
     }
   } catch (error) {
     console.error(`Error in getting Techpack info:`, error);
+    throw error;
+  }
+}
+
+// This method calls a DALLE model to generate the techpack flat sketch given user input
+export const getTechpackFlatSketch = async (techpackForm: TechpackForm) => {
+  try {
+    const completion = await generateFlatSketch(techpackForm);
+    console.log(`Generating flat sketch...\n`, completion)
+  } catch (error) {
+    console.error(`Error in generating flat sketch:`, error);
+    throw error;
+  }
+}
+
+// This method calls a DALLE model to generate the techpack 3D visualization given user input
+export const getTechpack3DVisualization = async (techpackForm: TechpackForm) => {
+  try {
+    const completion = await generate3DVisualization(techpackForm);
+    console.log(`Generating 3D visualization...\n`, completion)
+  } catch (error) {
+    console.error(`Error in generating 3D visualization:`, error);
     throw error;
   }
 }

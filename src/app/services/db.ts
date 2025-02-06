@@ -84,12 +84,13 @@ export const getTechpackOrCreate = async (techpackId: string, newData: TechpackF
 
   if (error || !data) {
     console.error('Techpack not found, creating a new one.');
+    const clonedData = JSON.parse(JSON.stringify(newData))
 
     const {data: insertedData, error: insertError } = await supabase
       .from('techpacks')
       .upsert([
         {
-          ...newData
+          ...clonedData
         }
       ]);
     
@@ -116,10 +117,23 @@ export const checkTechpackFormExists = async(techpackId : string ) => {
   return data;
 }
 
-export const saveTechpackPages = async (data: TechpackPages) => {
+export const getTechpackPages = async (techpackId: string) => {
+  const { data: selectedData, error } = await supabase
+    .from('techpack_pages')
+    .select('*')
+    .eq('id', techpackId)
+
+  if (error) {
+    console.error('Error getting data into techpack_pages table:', error);
+    throw new Error('Failed to getting data into techpacks_pages table');
+  }
+  return selectedData;
+}
+
+export const saveTechpackPages = async (techpackId: string, data: TechpackPages) => {
   const { data: insertedData, error } = await supabase
     .from('techpack_pages')
-    .insert([data])
+    .insert([{...data, id: techpackId}])
   
   if (error) {
     console.error('Error inserting data into techpack_pages table:', error);
@@ -240,6 +254,19 @@ export const getImagePath = async (uploadName: string) => {
       throw new Error('Failed to get the public signed url');
     }
     return publicURL.publicUrl;
+}
+
+export const saveGeneratedImages = async (techpackId: string, flatSketchUrl: string, visualImageUrl: string) => {
+  const { data: insertedData, error } = await supabase
+    .from('uploads')
+    .upsert({ id: techpackId, flatSketchUrl, visualImageUrl})
+    .select('id, description, flatSketchUrl, visualImageUrl')
+
+  if (error) {
+    console.error('Error inserting generated images:', error);
+    throw new Error('Failed to insert generated images into Uploads table');
+  }
+  return insertedData;
 }
 
 export { createClient };

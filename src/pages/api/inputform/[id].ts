@@ -1,10 +1,9 @@
 // pages/api/techpack/[id].ts
 import { Techpack, TechpackForm, TechpackPages } from "@/app/types";
 import { getTechpackForm, getTechpackOrCreate, saveTechpackForm, saveTechpackPages } from "@/app/services/db";
-import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from "formidable";
-import { getTechpackPages } from "@/app/services/ai";
+import { getTechpackContent } from "@/app/services/ai";
 
 export const config = {
   api: {
@@ -35,8 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         // const techpackFormResponse = await saveTechpackForm(body as unknown as TechpackForm); 
         const techpackFormResponse = await getTechpackOrCreate(id, body as unknown as TechpackForm);
-        const generatePagesResponse = await getTechpackPages(body.imageUrl, body as unknown as TechpackForm);
-        const savePagesResponse = await saveTechpackPages(generatePagesResponse as TechpackPages);
+        const generatePagesResponse = await getTechpackContent(body.imageUrl, body as unknown as TechpackForm);
+        const savePagesResponse = await saveTechpackPages(id, generatePagesResponse as TechpackPages);
         return res.status(200).json(savePagesResponse)
       } catch (error) {
         console.error(`Error saving and generating techpack content`, error)

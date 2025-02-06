@@ -49,14 +49,14 @@ const AuthDialog: React.FC = () => {
           <div className="flex flex-col items-center space-y-2">
             <Button
               onClick={handleGoogleSignIn}
-              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-full py-2 text-base font-semibold flex items-center justify-center"
+              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-3xl py-2 text-base font-semibold flex items-center justify-center"
             >
               <Image src={Google} alt="Google" width={20} height={20} className="mr-2" />
               Continue with Google
               <ChevronRight className="ml-2 h-5 w-5" />
             </Button>
             <Button
-              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-full py-2 text-base font-semibold flex items-center justify-center">
+              className="w-3/4 bg-[#3366FF] hover:opacity-80 text-white rounded-3xl py-2 text-base font-semibold flex items-center justify-center">
               Cancel
             </Button>
           </div>

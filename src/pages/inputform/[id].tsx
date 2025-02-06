@@ -61,7 +61,7 @@ const TechpackPage = () => {
     if (user?.id) {
       formData.append('user_id', user.id);
     }
-    
+
     Object.entries(formValues).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
@@ -89,6 +89,8 @@ const TechpackPage = () => {
     } finally {
       setLoading(false);
     }
+
+    // Handle generate images for PDF
   };
 
   const getExistingTechpack = async (techpackId: string) => {

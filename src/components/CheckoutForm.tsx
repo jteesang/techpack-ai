@@ -43,7 +43,7 @@ export default function CheckoutForm({ uiMode, planId }: CheckoutFormProps & { p
     <>
       <form onSubmit={handleSubmit}>
         <input type="hidden" name="planId" value={planId} />
-        <section className="flex flex-col w-full h-full rounded-lg justify-between p-4">
+        <section className="flex flex-col w-full h-full rounded-3xl justify-between p-4">
           <button
             type="submit"
             role="link"

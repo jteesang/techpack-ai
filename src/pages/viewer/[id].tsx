@@ -7,7 +7,8 @@ import NavBar from '@/components/NavBar';
 import Home from '@/components/ui/Home';
 import Footer from '@/components/ui/Footer';
 import { convertToBase64 } from '@/app/utils/convertImage';
-import { generateTestPDF, generateViewPDF } from '@/app/utils/pdfme/generate';
+import { generatePDF, generateViewPDF } from '@/app/utils/pdfme/generate';
+import { parseCoverPageData } from '@/app/utils/pdfme/prepare';
 
 
 
@@ -157,7 +158,20 @@ export default function TechpackViewer() {
   //   }
   // };
   const handleOpenPDF = async () => {
-    const blobPDF = await generateTestPDF();
+    // TODO - remove this once pdf is parsed
+    // const blobPDF = await generateTestPDF();
+
+
+    
+    const techpackContent = await getTechpackContent();    // GET techpackPages: populatePDF()
+    const coverPageData = techpackContent.shape.coverPage; // TODO - replace with a loop
+    const coverPageContent = parseCoverPageData(coverPageData);
+    const blobPDF = await generatePDF(coverPageContent)
+
+    //const pdfContent = await mapDataToPDF(techpackContent); // Map techpackPages to PDF template: mapDataToPDF()
+    //const blobPDF = await generateTestPDF(pdfContent); // Generate PDF with structured content
+
+    // console.log(`blobPDF.type: ${blobPDF.type}`)
     if (blobPDF) {
       setPdf(blobPDF);
       const url = URL.createObjectURL(blobPDF);
@@ -171,9 +185,9 @@ export default function TechpackViewer() {
     router.push(`/inputform/${techpackId}`)
   }
 
-  const populatePDF = async () => {
+  const getTechpackContent = async () => {
     try {
-      const response = await fetch(`/api/inputform/${String(techpackId)}`, {
+      const response = await fetch(`/api/techpacks/${String(techpackId)}`, {
         method: 'GET'
       });
 
@@ -181,7 +195,7 @@ export default function TechpackViewer() {
         throw new Error('Network response was not ok');
       }
       const result = await response.json()
-      console.log(`populatePDF method: ${typeof(response)}`)
+      console.log(`populatePDF method: ${result}`)
       return result;
     } catch (error) {
       console.error('Error:', error);
@@ -214,30 +228,26 @@ export default function TechpackViewer() {
   //     setInputs([inputs]);
   // }
 
-  const mapDataToPDF = (data: FormValues, image_path: string) => {
+  const mapDataToPDF = (data: FormValues) => {
     const sample_img_path = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=`
     console.log(`JSON.stringify(data): ${JSON.stringify(data)}`)
     return {
-      "cover-style-value": {style: data.style_id}
+      "cover-garment-link": { link: "https://example.com/garment-detail" },
+      "cover-value-style": { style: data.style_id },
+      "cover-value-name": { name: data.style_name },
+      "cover-value-season": { season: "" },
+      "cover-value-vendor": { vendor: "" },
+      "cover-value-coo": { coo: "" },
+      "cover-value-createdby": { createdBy: "" },
+      "cover-value-date-2": { date2: "" },
+      "cover-value-labdips": { labdips: "" },
+      "cover-value-fabrics": { fabrics: data.fabric },
+      "cover-value-prototypes": { prototypes: "" },
+      "cover-value-trims": { trims: "" },
+      "cover-value-salessamples": { salessamples: "" },
+      "cover-value-bulkdelivery": { bulkdelivery: "" },
+      "cover-value-date": { date: "" },
     }
-    // return {
-    //   "cover-garment-link": { link: "https://example.com/garment-detail" },
-    //   "cover-value-style": { style: data.style_id },
-    //   "cover-value-name": { name: data.style_name },
-    //   "cover-value-season": { season: "" },
-    //   "cover-value-vendor": { vendor: "" },
-    //   "cover-value-coo": { coo: "" },
-    //   "cover-value-createdby": { createdBy: "" },
-    //   "cover-value-date-2": { date2: "" },
-    //   "cover-value-labdips": { labdips: "" },
-    //   "cover-value-fabrics": { fabrics: data.fabric },
-    //   "cover-value-prototypes": { prototypes: "" },
-    //   "cover-value-trims": { trims: "" },
-    //   "cover-value-salessamples": { salessamples: "" },
-    //   "cover-value-bulkdelivery": { bulkdelivery: "" },
-    //   "cover-value-date": { date: "" },
-    //   "cover-image": { image: sample_img_path }
-    // }
   }
 
   // if (!pdfData) {
@@ -282,7 +292,7 @@ export default function TechpackViewer() {
     };
 
     loadPdf();
-  }, [router.isReady, router.query.id, pdf]);
+  }, [router.isReady, router.query.id]);
 
 
   return (
