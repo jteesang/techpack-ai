@@ -157,22 +157,21 @@ export default function TechpackViewer() {
   //         ]
   //   }
   // };
-  const handleOpenPDF = async () => {
-    // TODO - remove this once pdf is parsed
-    // const blobPDF = await generateTestPDF();
-
-
-    
+  const handleOpenPDF = async () => {    
     const techpackContent = await getTechpackContent();    // GET techpackPages: populatePDF()
-    const coverPageData = techpackContent.shape.coverPage; // TODO - replace with a loop
+    //console.log(`techpackContent: ${JSON.stringify(techpackContent)}`)
+    const coverPageData = techpackContent[0]?.coverPage || {};
+    console.log(`coverPageData: ${JSON.stringify(coverPageData)}`)
     const coverPageContent = parseCoverPageData(coverPageData);
+    console.log(`coverPageContent: ${JSON.stringify(coverPageContent)}`)
     const blobPDF = await generatePDF(coverPageContent)
 
     //const pdfContent = await mapDataToPDF(techpackContent); // Map techpackPages to PDF template: mapDataToPDF()
-    //const blobPDF = await generateTestPDF(pdfContent); // Generate PDF with structured content
+    // const blobPDF = await generateTestPDF(pdfContent); // Generate PDF with structured content
 
     // console.log(`blobPDF.type: ${blobPDF.type}`)
     if (blobPDF) {
+      console.log(`Setting blobPDF`)
       setPdf(blobPDF);
       const url = URL.createObjectURL(blobPDF);
       window.open(url, '_blank');
@@ -195,7 +194,7 @@ export default function TechpackViewer() {
         throw new Error('Network response was not ok');
       }
       const result = await response.json()
-      console.log(`populatePDF method: ${result}`)
+      console.log(`getTechpackContent: ${result}`)
       return result;
     } catch (error) {
       console.error('Error:', error);
@@ -280,6 +279,7 @@ export default function TechpackViewer() {
     // chatgpt display pdf using file
     const loadPdf = async () => {
       handleOpenPDF();
+      console.log(`loadPDF for Viewer`)
 
       if (pdf?.type != 'application/pdf') {
         console.error(`Provided file is not a PDF`);

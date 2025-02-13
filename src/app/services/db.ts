@@ -118,6 +118,7 @@ export const checkTechpackFormExists = async(techpackId : string ) => {
 }
 
 export const getTechpackPages = async (techpackId: string) => {
+  console.log(`getTechpackPages db.ts: ${techpackId}`)
   const { data: selectedData, error } = await supabase
     .from('techpack_pages')
     .select('*')
@@ -131,15 +132,27 @@ export const getTechpackPages = async (techpackId: string) => {
 }
 
 export const saveTechpackPages = async (techpackId: string, data: TechpackPages) => {
-  const { data: insertedData, error } = await supabase
+  // Check if record already exists
+  const {data: existingRecord, error: fetchError } = await supabase
     .from('techpack_pages')
-    .insert([{...data, id: techpackId}])
+    .select('*')
+    .eq('id', techpackId)
+    .single();
   
-  if (error) {
-    console.error('Error inserting data into techpack_pages table:', error);
-    throw new Error('Failed to insert data into techpacks_pages table');
+  if (fetchError) console.error(`Fetch error: ${fetchError}`);
+  
+  if (!existingRecord) {
+    const { data: insertedData, error } = await supabase
+      .from('techpack_pages')
+      .insert([{...data, id: techpackId}])
+
+    if (error) console.error(`Insert error: ${error}`);
+    else console.log(`Insert successful: ${data}`)
+    return insertedData;
+  } else {
+    console.log(`Techpack pages record already exists, skipping insert.`)
+    return;
   }
-  return insertedData;
 }
 
 export const getUserTechpacks = async (userId: string) => {

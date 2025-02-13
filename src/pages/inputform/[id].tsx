@@ -81,9 +81,15 @@ const TechpackPage = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const result = await response.json()
-      console.log(`result: ${(result)}`)
-      router.push(`/viewer/${techpackId}`)
+      if (response.status === 204) {
+        console.log(`No content returned`);
+        router.push(`/viewer/${techpackId}`)
+      }
+      else {
+        const result = await response.json()
+        console.log(`result: ${(result)}`)
+      }
+
     } catch (error) {
       console.error('Error:', error);
     } finally {

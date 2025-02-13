@@ -36,6 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const techpackFormResponse = await getTechpackOrCreate(id, body as unknown as TechpackForm);
         const generatePagesResponse = await getTechpackContent(body.imageUrl, body as unknown as TechpackForm);
         const savePagesResponse = await saveTechpackPages(id, generatePagesResponse as TechpackPages);
+        if (!savePagesResponse) {
+          return res.status(204).json({message: "No techpack pages found"})
+        }
         return res.status(200).json(savePagesResponse)
       } catch (error) {
         console.error(`Error saving and generating techpack content`, error)

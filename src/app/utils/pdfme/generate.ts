@@ -26,7 +26,7 @@ export const generatePDF = async (inputs: any): Promise<Blob> => {
 };
 
 // Helper method to generate PDF Viewer
-export const generateViewPDF = async (domContainer: HTMLElement, inputs: any) => {
+export const generateViewPDF = async (domContainer: HTMLElement) => {
   return new Viewer({
     domContainer: domContainer,
     template: coverPageTemplate,
