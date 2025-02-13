@@ -19,6 +19,7 @@ import Inspiration from '@/app/assets/Inspiration.png';
 import LabelPlacements from '@/app/assets/LabelPlacements.png';
 import PhotoSpecs from '@/app/assets/PhotoSpecs.png';
 import PrintFabric from '@/app/assets/PrintFabric.png';
+import { useUser } from '@/context/UserContext';
 
 interface PageCardProps {
   title: string;
@@ -114,6 +115,8 @@ const pricingPlans: PricingPlanProps[] = [
 
 // Components
 const Header: React.FC = () => {
+  const { user } = useUser();
+
   return (
     // TODO - old header
     // <header className="flex justify-between items-center py-4 px-8">
@@ -149,10 +152,8 @@ const Header: React.FC = () => {
         </div>
       </button> */}
       <div className="flex flex-row">
-        <NavBar />
-        <Login />
+        {!user ? <Login /> : <NavBar/>}
       </div>
-
     </header>
   )
 
@@ -163,7 +164,7 @@ const PageCard: React.FC<{ card: PageCardProps }> = ({ card }) => (
   <div className="w-full bg-white rounded-[48px] shadow-lg overflow-hidden">
     <div className="p-6 flex flex-col md:flex-row">
       <div className="w-full md:w-1/2 pr-4 mb-4 md:mb-0">
-        <Image src={card.image} alt={card.title} layout="fixed" width={200} height={150} className="object-cover rounded-xl" />
+        <Image src={card.image} alt={card.title} width={200} height={150} className="object-cover rounded-xl" />
       </div>
       <div className="w-full md:w-1/2 pl-4">
         <h3 className="text-xl font-semibold text-[#0047FF] mb-2">{card.title}</h3>
@@ -192,10 +193,10 @@ const PricingCard: React.FC<{ plan: PricingPlanProps }> = ({ plan }) => {
           </li>
         ))}
       </ul>
-      <button className={`w-full h-[60px] shadow-md rounded-full flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold hover:opacity-80`}>
+      <div className={`w-full h-[60px] shadow-md rounded-full flex items-center justify-center mt-6 ${plan.buttonColor} text-lg font-semibold hover:opacity-80`}>
         <CheckoutForm uiMode={'embedded'} planId={plan.name} />
         <ArrowRight className="h-5 w-5" />
-      </button>
+      </div>
     </div>
   );
 }

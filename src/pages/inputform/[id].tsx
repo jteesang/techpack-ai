@@ -4,6 +4,7 @@ import InputForm from '@/components/inputform';
 import { FormValues, TechpackForm } from '@/app/types';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useUser } from '@/context/UserContext';
 
 interface TechpackProps {
   techpackId: string;
@@ -11,6 +12,7 @@ interface TechpackProps {
 
 const TechpackPage = () => {
   const router = useRouter();
+  const {user} = useUser();
   const [techpackId, setTechpackId] = useState<string>(router.query.id as string);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -54,7 +56,12 @@ const TechpackPage = () => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append('id', techpackId); // Use the techpackId from the previous page
+
+    formData.append('id', techpackId);
+    if (user?.id) {
+      formData.append('user_id', user.id);
+    }
+
     Object.entries(formValues).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         formData.append(key, value.toString());
@@ -74,30 +81,39 @@ const TechpackPage = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const result = await response.json()
-      console.log(`result: ${(result)}`)
-      router.push(`/viewer/${techpackId}`)
-      // console.log('Success:', result);
+      if (response.status === 204) {
+        console.log(`No content returned`);
+        router.push(`/viewer/${techpackId}`)
+      }
+      else {
+        const result = await response.json()
+        console.log(`result: ${(result)}`)
+      }
 
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
+
+    // Handle generate images for PDF
   };
 
   const getExistingTechpack = async (techpackId: string) => {
-    try {
+    // try {
       const response = await fetch(`/api/inputform/${String(techpackId)}`, {
         method: 'GET'
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      // if (!response.ok) {
+      //   throw new Error('Network response was not ok');
+      // }
       const result = await response.json()
       return result;
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    // } catch (error) {
+      // console.error('Error:', error);
+      // return result.status
+    // }
   }
 
   useEffect(() => {
@@ -113,7 +129,7 @@ const TechpackPage = () => {
       const fetchTechpack = async () => {
         try {
           const response = await getExistingTechpack(techpackId)
-          if (response.status == 404 || response.status === 500) {
+          if (response.status == 404 || response.status == 500) {
             // do nothing 
             console.log('Techpack does not currently exist.')
           } else {
@@ -131,14 +147,27 @@ const TechpackPage = () => {
 
   return (
     <div>
-      <InputForm
-        formValues={formValues}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        selectedSizing={formValues.sizing_preference}
-        onSizingChange={handleSizingChange}
-        onColorChange={handleColorChange}
-      />
+      {loading ? (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-100 bg-opacity-50">
+          <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="flex justify-center items-center">
+              <div className="mr-4">
+                <div className="w-10 h-10 rounded-full border-2 border-blue-500 border-r-transparent animate-spin"></div>
+              </div>
+              <p>Loading...</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <InputForm
+          formValues={formValues}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          selectedSizing={formValues.sizing_preference}
+          onSizingChange={handleSizingChange}
+          onColorChange={handleColorChange}
+        />
+      )}
     </div>
   );
 };

@@ -32,7 +32,7 @@ const Dashboard = ()  => {
       };
 
       fetchUserId();
-
+      // TODO delete?
       const fetchTechpacks = async () => {
         try {
           if (userId) {
@@ -45,7 +45,7 @@ const Dashboard = ()  => {
             }
             const data = await response.json();
             setTechPacks(data);
-            console.log(`${JSON.stringify(data)}`)
+            // console.log(`${JSON.stringify(data)}`)
           }
         } catch (error) {
           console.error('Failed to fetch techpacks data:', error);
@@ -55,6 +55,7 @@ const Dashboard = ()  => {
     const fetchTechpacks2 = async () => {
         try {
           if (userId) {
+            // TODO - why no use api route?
             const response = await getTechpacksForUser(userId);
             
           

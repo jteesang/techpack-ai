@@ -31,7 +31,7 @@ const Login: React.FC = () => {
                 // </button>
             ) : (
                 <button 
-                  className="bg-[#0047FF] text-white px-4 py-2 rounded-full hover:opacity-80" 
+                  className="bg-[#0047FF] text-white px-4 py-2 rounded-3xl shadow-md hover:opacity-80" 
                   onClick={handleGoogleLogin}
                 >
                 Login

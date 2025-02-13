@@ -78,7 +78,8 @@ export interface Techpack {
     styleName: z.string(),
     styleNumber: z.string(),
     season: z.string(),
-    designer: z.string() 
+    designer: z.string(),
+    date: z.string() 
   });
   
   const InspirationPageSchema = z.object({
@@ -193,7 +194,7 @@ export interface Techpack {
   });
   
   // Derive TypeScript types from Zod schemas
-  type CoverPage = z.infer<typeof CoverPageSchema>;
+  export type CoverPage = z.infer<typeof CoverPageSchema>;
   type InspirationPage = z.infer<typeof InspirationPageSchema>;
   type CalloutsPage = z.infer<typeof CalloutsPageSchema>;
   type PrintFabricsPage = z.infer<typeof PrintFabricsPageSchema>;
@@ -210,6 +211,7 @@ export interface Techpack {
   
   // ---------------------------------------- Database schemas ----------------------------------------
   export interface TechpackPages {
+    id: string;
     coverPage: CoverPage
     inspirationPage: InspirationPage
     calloutsPage: CalloutsPage
@@ -240,6 +242,7 @@ export interface Techpack {
   
   export interface TechpackForm {
     id: string;
+    user_id: string;
     description: string;
     brand_name: string;
     style_id: string;

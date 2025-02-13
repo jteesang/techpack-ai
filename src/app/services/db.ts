@@ -38,20 +38,21 @@ export const getImageUrl = async (id: string) => {
   const { data: imageUrl, error } = await supabase
   .from('uploads')
   .select('image_path')
-  .eq('id', id)
+  .eq('id', '003d4a4d-771a-47e3-aaec-01b9b6f060a0')
   .single()
 
   if (error) {
     console.error('Error getting uploads:', error);
     throw new Error('Failed to get entry from Uploads table');
   }
+  console.log(`\n ------ imageUrl: ${imageUrl}`)
   return imageUrl;
 }
 
 export const saveTechpackForm = async (data: TechpackForm) => {
   const { data: insertedData, error } = await supabase
     .from('techpacks')
-    .insert([data])
+    .upsert([data])
   
   if (error) {
     console.error('Error inserting data:', error);
@@ -74,6 +75,34 @@ export const getTechpackForm = async (techpackId: string) => {
   return techpack;
 }
 
+export const getTechpackOrCreate = async (techpackId: string, newData: TechpackForm) => {
+  const { data, error, status } = await supabase
+    .from ('techpacks')
+    .select('*')
+    .eq('id', techpackId)
+    .single()
+
+  if (error || !data) {
+    console.error('Techpack not found, creating a new one.');
+    const clonedData = JSON.parse(JSON.stringify(newData))
+
+    const {data: insertedData, error: insertError } = await supabase
+      .from('techpacks')
+      .upsert([
+        {
+          ...clonedData
+        }
+      ]);
+    
+    if (insertError) {
+      console.error('Error inserting data: ', insertError);
+      throw new Error('Failed to insert new Techpack');
+    }
+    return insertedData;
+  }
+  return data;
+}
+
 export const checkTechpackFormExists = async(techpackId : string ) => {
   const { data, error } = await supabase
   .from('techpacks')
@@ -88,16 +117,42 @@ export const checkTechpackFormExists = async(techpackId : string ) => {
   return data;
 }
 
-export const saveTechpackPages = async (data: TechpackPages) => {
-  const { data: insertedData, error } = await supabase
+export const getTechpackPages = async (techpackId: string) => {
+  console.log(`getTechpackPages db.ts: ${techpackId}`)
+  const { data: selectedData, error } = await supabase
     .from('techpack_pages')
-    .insert([data])
-  
+    .select('*')
+    .eq('id', techpackId)
+
   if (error) {
-    console.error('Error inserting data into techpack_pages table:', error);
-    throw new Error('Failed to insert data into techpacks_pages table');
+    console.error('Error getting data into techpack_pages table:', error);
+    throw new Error('Failed to getting data into techpacks_pages table');
   }
-  return insertedData;
+  return selectedData;
+}
+
+export const saveTechpackPages = async (techpackId: string, data: TechpackPages) => {
+  // Check if record already exists
+  const {data: existingRecord, error: fetchError } = await supabase
+    .from('techpack_pages')
+    .select('*')
+    .eq('id', techpackId)
+    .single();
+  
+  if (fetchError) console.error(`Fetch error: ${fetchError}`);
+  
+  if (!existingRecord) {
+    const { data: insertedData, error } = await supabase
+      .from('techpack_pages')
+      .insert([{...data, id: techpackId}])
+
+    if (error) console.error(`Insert error: ${error}`);
+    else console.log(`Insert successful: ${data}`)
+    return insertedData;
+  } else {
+    console.log(`Techpack pages record already exists, skipping insert.`)
+    return;
+  }
 }
 
 export const getUserTechpacks = async (userId: string) => {
@@ -212,6 +267,19 @@ export const getImagePath = async (uploadName: string) => {
       throw new Error('Failed to get the public signed url');
     }
     return publicURL.publicUrl;
+}
+
+export const saveGeneratedImages = async (techpackId: string, flatSketchUrl: string, visualImageUrl: string) => {
+  const { data: insertedData, error } = await supabase
+    .from('uploads')
+    .upsert({ id: techpackId, flatSketchUrl, visualImageUrl})
+    .select('id, description, flatSketchUrl, visualImageUrl')
+
+  if (error) {
+    console.error('Error inserting generated images:', error);
+    throw new Error('Failed to insert generated images into Uploads table');
+  }
+  return insertedData;
 }
 
 export { createClient };
